@@ -6,3 +6,28 @@
 .App > div {
   margin-right: 50px;
 }
+
+.taskDone{
+  text-decoration: line-through;
+}
+
+.activeBtn{
+  background-color: dodgerblue;
+  color: white;
+}
+.allBtn{
+  background-color: #06b000;
+  color: white;
+}
+.completedBtn {
+  background-color: #03af6d;
+  color: white;
+}
+
+.errorInput{
+  border: 2px solid red;
+  outline: none;
+}
+.errorText{
+  color: red;
+}
