@@ -9,19 +9,22 @@
 
 .taskDone{
   text-decoration: line-through;
+  color: #bebebe;
 }
 
 .activeBtn{
   background-color: dodgerblue;
+  border: 2px solid dodgerblue;
+  border-radius: 5px;
   color: white;
+  margin-right: 5px;
 }
-.allBtn{
-  background-color: #06b000;
+.defaultBtn {
+  background-color: #9b0098;
+  border: 2px solid #9b0098;
+  border-radius: 5px;
   color: white;
-}
-.completedBtn {
-  background-color: #03af6d;
-  color: white;
+  margin-right: 5px;
 }
 
 .errorInput{

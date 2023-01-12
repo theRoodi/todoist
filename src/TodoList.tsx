@@ -24,7 +24,7 @@ export const TodoList = (props: TodoListPropsType) => {
 
     const addTask = () => {
         const trimTitle = title.trim()
-        if (trimTitle){
+        if (trimTitle) {
             props.addTask(trimTitle)
         } else {
             setError(true)
@@ -83,12 +83,13 @@ export const TodoList = (props: TodoListPropsType) => {
                 {tasksElements}
             </ul>
             <div>
-                <button className={props.filter === 'all' ? 'allBtn' : ''} onClick={onClickHandlerCreator('all')}>All
+                <button className={props.filter === 'all' ? 'activeBtn' : 'defaultBtn'}
+                        onClick={onClickHandlerCreator('all')}>All
                 </button>
-                <button className={props.filter === 'active' ? 'activeBtn' : ''}
+                <button className={props.filter === 'active' ? 'activeBtn' : 'defaultBtn'}
                         onClick={onClickHandlerCreator('active')}>Active
                 </button>
-                <button className={props.filter === 'completed' ? 'completedBtn' : ''}
+                <button className={props.filter === 'completed' ? 'activeBtn' : 'defaultBtn'}
                         onClick={onClickHandlerCreator('completed')}>Completed
                 </button>
             </div>
