@@ -2,6 +2,8 @@ import React, {ChangeEvent} from 'react';
 import {FilterValuesType} from './App';
 import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
+import {Button, Checkbox, IconButton} from '@mui/material';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 
 export type TasksType = {
@@ -52,14 +54,15 @@ export const TodoList = (props: TodoListPropsType) => {
             }
             return (
                 <li key={task.id}>
-                    <input type="checkbox"
-                           checked={task.isDone}
-                           onChange={changeStatus}
-                    />
+                    <Checkbox checked={task.isDone}
+                              size='small'
+                              onChange={changeStatus}/>
                     <div style={{display: 'inline-block'}} className={task.isDone ? 'taskDone' : ''}>
                         <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
                     </div>
-                    <button onClick={removeTask}>X</button>
+                    <IconButton color='primary'  aria-label="delete" size="small" onClick={removeTask} >
+                        <HighlightOffIcon />
+                    </IconButton>
                 </li>
             )
         })
@@ -68,22 +71,24 @@ export const TodoList = (props: TodoListPropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.title} changeTitle={changeTodoListTitle} />
-                <button onClick={onClickRemoveTodoListHandler}>X</button>
+                <IconButton color='primary' aria-label="delete" size="small" onClick={onClickRemoveTodoListHandler} >
+                    <HighlightOffIcon />
+                </IconButton>
             </h3>
             <AddItemForm addItem={addTask} />
             <ul>
                 {tasksElements}
             </ul>
             <div>
-                <button className={props.filter === 'all' ? 'activeBtn' : 'defaultBtn'}
+                <Button sx={{mr:'5px'}} variant="outlined" size='small' color={props.filter === 'all' ? 'secondary' : 'primary'}
                         onClick={onClickHandlerCreator('all')}>All
-                </button>
-                <button className={props.filter === 'active' ? 'activeBtn' : 'defaultBtn'}
+                </Button>
+                <Button sx={{mr:'5px'}}  variant="outlined" size='small' color={props.filter === 'active' ? 'secondary' : 'primary'}
                         onClick={onClickHandlerCreator('active')}>Active
-                </button>
-                <button className={props.filter === 'completed' ? 'activeBtn' : 'defaultBtn'}
+                </Button>
+                <Button variant="outlined" size='small' color={props.filter === 'completed' ? 'secondary' : 'primary'}
                         onClick={onClickHandlerCreator('completed')}>Completed
-                </button>
+                </Button>
             </div>
         </div>
     );

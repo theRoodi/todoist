@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-
+import {ButtonGroup, IconButton, TextField} from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 type AddItemFormType = {
     addItem: (title: string) => void
@@ -31,12 +32,20 @@ const AddItemForm = (props: AddItemFormType) => {
 
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeSetTitle}
-                   type="text"
-                   onKeyDown={onPressEnter}
-                   className={error ? 'errorInput' : ''}/>
-            <button onClick={addItem}>+</button>
+            <ButtonGroup>
+                <TextField
+                    value={title}
+                    onChange={onChangeSetTitle}
+                    onKeyDown={onPressEnter}
+                    variant="outlined"
+                    label='Enter title'
+                    error={error}
+                    size='small'
+                />
+                <IconButton color="primary" aria-label="delete" size="small" onClick={addItem}>
+                    <AddCircleOutlineIcon/>
+                </IconButton>
+            </ButtonGroup>
             {error && <p className={'errorText'}>Please enter title!</p>}
         </div>
     );
