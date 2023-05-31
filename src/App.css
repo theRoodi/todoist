@@ -1,44 +1,8 @@
-.taskDone{
-  text-decoration: line-through;
-  color: #bebebe;
+.App {
+  padding: 30px;
+  display: flex;
 }
 
-
-
-/*.App {*/
-/*  padding: 30px;*/
-/*  display: flex;*/
-/*  font-family:  'Roboto', sans-serif;*/
-/*}*/
-/*.App li {*/
-/*  list-style-type: none;*/
-/*}*/
-
-/*.App > div {*/
-/*  margin-right: 50px;*/
-/*}*/
-
-
-
-/*.activeBtn{*/
-/*  background-color: dodgerblue;*/
-/*  border: 2px solid dodgerblue;*/
-/*  border-radius: 5px;*/
-/*  color: white;*/
-/*  margin-right: 5px;*/
-/*}*/
-/*.defaultBtn {*/
-/*  background-color: #9b0098;*/
-/*  border: 2px solid #9b0098;*/
-/*  border-radius: 5px;*/
-/*  color: white;*/
-/*  margin-right: 5px;*/
-/*}*/
-
-/*.errorInput{*/
-/*  border: 2px solid red;*/
-/*  outline: none;*/
-/*}*/
-/*.errorText{*/
-/*  color: red;*/
-/*}*/
+.App > div {
+  margin-right: 50px;
+}
