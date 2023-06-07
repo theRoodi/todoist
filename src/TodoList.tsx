@@ -80,19 +80,19 @@ export const Todolist = (props: PropsType) => {
                 <Button variant="contained"
                         size="small"
                         disableElevation
-                        className={props.filter === 'all' ? 'activeFilter' : ''}
+                        color={props.filter === 'all' ? 'secondary' : 'primary'}
                         onClick={onAllChangeFilter}>All
                 </Button>
                 <Button variant="contained"
                         size="small"
                         disableElevation
-                        className={props.filter === 'active' ? 'activeFilter' : ''}
+                        color={props.filter === 'active' ? 'secondary' : 'primary'}
                         onClick={onActiveChangeFilter}>Active
                 </Button>
                 <Button variant="contained"
                         size="small"
                         disableElevation
-                        className={props.filter === 'completed' ? 'activeFilter' : ''}
+                        color={props.filter === 'completed' ? 'secondary' : 'primary'}
                         onClick={onCompletedChangeFilter}>Completed
                 </Button>
             </div>

@@ -126,7 +126,7 @@ function App() {
 
     return (
         <ThemeProvider theme={customTheme}>
-            <CssBaseline />
+            <CssBaseline/>
             <div className="App">
                 <AppBar position={'static'}>
                     <Toolbar>
@@ -142,9 +142,10 @@ function App() {
                             Todolist
                         </Typography>
                         <FormGroup>
-                            <FormControlLabel control={<Switch defaultChecked={isDarkMode} onChange={(e) =>
-                                setDarkMode(e.currentTarget.checked)}/>}
-                                              label={isDarkMode ? "Go to Light" : "Go to Dark"}
+                            <FormControlLabel
+                                control={<Switch defaultChecked={false} onChange={(e) =>
+                                    setDarkMode(e.currentTarget.checked)}/>}
+                                label={isDarkMode ? 'Go to Light' : 'Go to Dark'}
                             />
                         </FormGroup>
                         <Button color={'inherit'}>Login</Button>
@@ -154,7 +155,7 @@ function App() {
                     <Grid container sx={{p: '15px 0'}}>
                         <AddItemForm addItem={addTodolist}/>
                     </Grid>
-                    <Grid container spacing={4}>
+                    <Grid container spacing={3}>
                         {
                             todolists.map(tl => {
                                 let filteredTasks = tasks[tl.id]
