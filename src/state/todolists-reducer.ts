@@ -3,23 +3,24 @@ import {v1} from 'uuid';
 
 
 export type RemoveTodolistType = {
-    type: string
+    type: 'REMOVE-TODOLIST'
     id: string
 }
 
 export type AddTodolistType = {
-    type: string
+    type: 'ADD-TODOLIST'
     title: string
+    idTodoList: string
 }
 
 export type ChangeTodolistTitleType = {
-    type: string
+    type: 'CHANGE-TODOLIST-TITLE'
     id: string
     title: string
 }
 
 export type ChangeTodolistFilterType = {
-    type: string
+    type: 'CHANGE-TODOLIST-FILTER'
     id: string
     filter: FilterType
 }
@@ -35,7 +36,7 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionType)
         case 'ADD-TODOLIST' : {
             return [
                 ...state,
-                {id: v1(), title: action.title, filter: 'all'}
+                {id: action.idTodoList, title: action.title, filter: 'all'}
             ]
         }
         case 'CHANGE-TODOLIST-TITLE': {
@@ -56,19 +57,19 @@ export const todolistsReducer = (state: Array<TodoListType>, action: ActionType)
         }
 
         default:
-            throw new Error('Typo HZ')
+            return state
     }
 }
 
-export const RemoveTodolistAC = (todoId: string): RemoveTodolistType => {
+export const removeTodolistAC = (todoId: string): RemoveTodolistType => {
     return {type: 'REMOVE-TODOLIST', id: todoId}
 }
-export const AddTodolistAC = (title: string): AddTodolistType => {
-    return {type: 'ADD-TODOLIST', title}
+export const addTodolistAC = (title: string): AddTodolistType => {
+    return {type: 'ADD-TODOLIST', title, idTodoList: v1()}
 }
-export const ChangeTodolistTitleAC = (title: string, id: string): ChangeTodolistTitleType => {
+export const changeTodolistTitleAC = (title: string, id: string): ChangeTodolistTitleType => {
     return {type: 'CHANGE-TODOLIST-TITLE', title, id}
 }
-export const ChangeTodolistFilterAC = (filter: FilterType, id: string): ChangeTodolistFilterType => {
+export const changeTodolistFilterAC = (filter: FilterType, id: string): ChangeTodolistFilterType => {
     return {type: 'CHANGE-TODOLIST-FILTER', filter, id}
 }
