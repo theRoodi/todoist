@@ -1,6 +1,6 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, RemoveTaskAC, taskReducer} from './task-reducer';
-import {TaskStateType} from '../App';
-import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, taskReducer} from './task-reducer';
+import {TaskStateType} from '../AppWithRedux';
+import {addTodolistAC, removeTodolistAC} from './todo-lists-reducer';
 
 test('task removed', () => {
 
@@ -15,7 +15,7 @@ test('task removed', () => {
         ]
     }
 
-    const endState = taskReducer(startState, RemoveTaskAC('taskId', 'todoId'))
+    const endState = taskReducer(startState, removeTaskAC('taskId', 'todoId'))
 
 
     expect(endState['todoId'].length).toBe(1)

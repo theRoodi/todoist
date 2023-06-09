@@ -1,9 +1,12 @@
 import React, {ChangeEvent} from 'react';
-import {FilterType} from './App';
+import {FilterType} from './AppWithRedux';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton, List, ListItem} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootStateType} from './state/store';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/task-reducer';
 
 
 export type TasksType = {
@@ -15,26 +18,31 @@ export type TasksType = {
 export type PropsType = {
     title: string
     todoId: string
-    tasks: Array<TasksType>
-    removeTask: (id: string, todolistId: string) => void
     changeFilter: (filter: FilterType, todolistId: string) => void
-    addTask: (title: string, todolistId: string) => void
-    changeStatus: (id: string, isDone: boolean, todolistId: string) => void
     removeTodolist: (todoId: string) => void
     filter: string
-    changeTaskTitle: (id: string, newTitle: string, todoId: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
 }
 export const Todolist = (props: PropsType) => {
 
-    const removeTask = (id: string) => props.removeTask(id, props.todoId)
+    const dispatch = useDispatch()
+    const tasks = useSelector<RootStateType, Array<TasksType>>(state => state.tasks[props.todoId])
+
+    const removeTask = (id: string) => dispatch(removeTaskAC(id, props.todoId))
+    // const addTask = (title: string) =>  dispatch(addTaskAC(title, props.todoId))
     const removeTodolist = () => props.removeTodolist(props.todoId)
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(props.todoId, title)
     const onAllChangeFilter = () => props.changeFilter('all', props.todoId)
     const onActiveChangeFilter = () => props.changeFilter('active', props.todoId)
     const onCompletedChangeFilter = () => props.changeFilter('completed', props.todoId)
-    const addTask = (title: string) => {
-        props.addTask(title, props.todoId)
+
+    let filteredTasks = tasks
+
+    if (props.filter === 'completed') {
+        filteredTasks = tasks.filter(t => t.isDone)
+    }
+    if (props.filter === 'active') {
+        filteredTasks = tasks.filter(t => !t.isDone)
     }
 
     return (
@@ -44,19 +52,22 @@ export const Todolist = (props: PropsType) => {
                     <ClearIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={(title) => dispatch(addTaskAC(title, props.todoId))}/>
             <List>
                 {
-                    props.tasks.map(task => {
+                    filteredTasks.map(task => {
                         const onRemoveHandler = () => {
                             removeTask(task.id)
                         }
                         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeStatus(task.id, e.currentTarget.checked, props.todoId)
+                            // changeStatus(task.id, e.currentTarget.checked, props.todoId)
+                            dispatch(changeTaskStatusAC(props.todoId, task.id, e.currentTarget.checked))
                         }
                         const onChangeTitle = (newValue: string) => {
-                            props.changeTaskTitle(task.id, newValue, props.todoId)
+                            // changeTaskTitle(task.id, newValue, props.todoId)
+                            dispatch(changeTaskTitleAC(props.todoId, task.id, newValue))
                         }
+
                         return (
                             <ListItem
                                 key={task.id}
