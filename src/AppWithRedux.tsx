@@ -1,25 +1,26 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
-import {TasksType, Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {
     AppBar,
     Button,
-    Container, createTheme, CssBaseline, FormControlLabel, FormGroup,
+    Container,
+    createTheme,
+    CssBaseline,
+    FormControlLabel,
+    FormGroup,
     Grid,
-    IconButton, Switch, ThemeProvider,
+    IconButton,
+    Switch,
+    ThemeProvider,
     Toolbar,
     Typography
 } from '@mui/material';
 import {Menu} from '@mui/icons-material';
-import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
-} from './state/todo-lists-reducer';
+import {addTodolistAC,} from './state/todo-lists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootStateType} from './state/store';
+import {TasksType, Todolist} from './TodoList';
 
 export type FilterType = 'all' | 'completed' | 'active'
 export type TodoListType = {
@@ -37,22 +38,8 @@ export function AppWithRedux() {
     const todoLists = useSelector<RootStateType, Array<TodoListType>>(state => state.todoLists)
 
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
-    const removeTodolist = (todoId: string) => {
-        const action = removeTodolistAC(todoId)
-        dispatch(action)
-    }
-    const changeFilter = (value: FilterType, todolistId: string) => {
-        const action = changeTodolistFilterAC(value, todolistId)
-        dispatch(action)
-    }
     const addTodolist = (title: string) => {
-        const action = addTodolistAC(title)
-        dispatch(action)
-    }
-
-    const changeTodolistTitle = (id: string, newTitle: string) => {
-        const action = changeTodolistTitleAC(newTitle, id)
-        dispatch(action)
+        dispatch(addTodolistAC(title))
     }
 
     const darkMode = isDarkMode ? 'dark' : 'light'
@@ -98,17 +85,12 @@ export function AppWithRedux() {
                     <Grid container spacing={3}>
                         {
                             todoLists.map(tl => {
-
                                 return (
                                     <Grid key={tl.id} item>
                                         <Todolist
-                                            key={tl.id}
                                             title={tl.title}
                                             todoId={tl.id}
-                                            changeFilter={changeFilter}
-                                            filter={tl.filter}
-                                            removeTodolist={removeTodolist}
-                                            changeTodolistTitle={changeTodolistTitle}/>
+                                            filter={tl.filter}/>
                                     </Grid>
                                 )
                             })

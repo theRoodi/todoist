@@ -8,16 +8,21 @@ import {
     todoListsReducer
 } from './todo-lists-reducer';
 
+let todoId: string
+let todoId2: string
+let startState:Array<TodoListType>
 
-test ('todolist removed', ()=> {
-    const todoId = v1()
-    const todoId2 = v1()
-
-    const startState: Array<TodoListType> = [
+beforeEach(()=> {
+    todoId = v1()
+    todoId2 = v1()
+    startState = [
         {id: todoId, title: 'what to learn', filter: 'all'},
         {id: todoId2, title: 'what to buy', filter: 'all'}
     ]
+})
 
+
+test ('todolist removed', ()=> {
     const endState = todoListsReducer(startState, removeTodolistAC(todoId))
 
     expect(endState.length).toBe(1)
@@ -26,14 +31,6 @@ test ('todolist removed', ()=> {
 })
 
 test ('todolist added', ()=> {
-    const todoId = v1()
-    const todoId2 = v1()
-
-    const startState: Array<TodoListType> = [
-        {id: todoId, title: 'what to learn', filter: 'all'},
-        {id: todoId2, title: 'what to buy', filter: 'all'}
-    ]
-
     const endState = todoListsReducer(startState, addTodolistAC('newTodo'))
 
     expect(endState.length).toBe(3)
@@ -42,14 +39,6 @@ test ('todolist added', ()=> {
 })
 
 test ('todolist change title', ()=> {
-    const todoId = v1()
-    const todoId2 = v1()
-
-    const startState: Array<TodoListType> = [
-        {id: todoId, title: 'what to learn', filter: 'all'},
-        {id: todoId2, title: 'what to buy', filter: 'all'}
-    ]
-
     const endState = todoListsReducer(startState, changeTodolistTitleAC( 'newTodolistTitle', todoId))
 
     expect(endState.length).toBe(2)
@@ -58,14 +47,6 @@ test ('todolist change title', ()=> {
 })
 
 test ('todolist change filter', ()=> {
-    const todoId = v1()
-    const todoId2 = v1()
-
-    const startState: Array<TodoListType> = [
-        {id: todoId, title: 'what to learn', filter: 'all'},
-        {id: todoId2, title: 'what to buy', filter: 'all'}
-    ]
-
     const endState = todoListsReducer(startState, changeTodolistFilterAC('active', todoId))
 
     expect(endState.length).toBe(2)

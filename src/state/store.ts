@@ -7,10 +7,8 @@ export type RootStateType = ReturnType<typeof rootReducer>
 export const rootReducer = combineReducers({
     todoLists: todoListsReducer,
     tasks: taskReducer
-    }
-)
+})
 export const store = createStore(rootReducer)
-
 
 
 // @ts-ignore

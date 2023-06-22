@@ -2,28 +2,10 @@ import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, taskRedu
 import {TaskStateType} from '../AppWithRedux';
 import {addTodolistAC, removeTodolistAC} from './todo-lists-reducer';
 
-test('task removed', () => {
+let startState: TaskStateType
 
-    const startState: TaskStateType = {
-        'todoId': [
-            {id: 'taskId', title: 'HTML&CSS', isDone: true},
-            {id: 'taskId2', title: 'JS', isDone: true}
-        ],
-        'todoId2': [
-            {id: 'taskId3', title: 'bread', isDone: true},
-            {id: 'taskId4', title: 'milk', isDone: false}
-        ]
-    }
-
-    const endState = taskReducer(startState, removeTaskAC('taskId', 'todoId'))
-
-
-    expect(endState['todoId'].length).toBe(1)
-})
-
-test('task added', () => {
-
-    const startState: TaskStateType = {
+beforeEach(()=> {
+    startState = {
         'todoId': [
             {id: 'taskId', title: 'HTML&CSS', isDone: false},
             {id: 'taskId2', title: 'JS', isDone: false}
@@ -33,8 +15,17 @@ test('task added', () => {
             {id: 'taskId4', title: 'milk', isDone: false}
         ]
     }
+})
 
-    const action = addTaskAC('todoId', 'title')
+test('task removed', () => {
+    const endState = taskReducer(startState, removeTaskAC('taskId', 'todoId'))
+
+
+    expect(endState['todoId'].length).toBe(1)
+})
+
+test('task added', () => {
+    const action = addTaskAC('title', 'todoId')
 
     const endState = taskReducer(startState, action)
 
@@ -44,54 +35,18 @@ test('task added', () => {
 })
 
 test('task changed title', () => {
-
-    const startState: TaskStateType = {
-        'todoId': [
-            {id: 'taskId', title: 'HTML&CSS', isDone: true},
-            {id: 'taskId2', title: 'JS', isDone: true}
-        ],
-        'todoId2': [
-            {id: 'taskId3', title: 'bread', isDone: true},
-            {id: 'taskId4', title: 'milk', isDone: false}
-        ]
-    }
-
     const endState = taskReducer(startState, changeTaskTitleAC('todoId','taskId', 'title'))
 
 
     expect(endState['todoId'][0].title).toBe('title')
 })
 test('task changed status', () => {
-
-    const startState: TaskStateType = {
-        'todoId': [
-            {id: 'taskId', title: 'HTML&CSS', isDone: true},
-            {id: 'taskId2', title: 'JS', isDone: true}
-        ],
-        'todoId2': [
-            {id: 'taskId3', title: 'bread', isDone: true},
-            {id: 'taskId4', title: 'milk', isDone: false}
-        ]
-    }
-
     const endState = taskReducer(startState, changeTaskStatusAC('todoId','taskId', true))
 
 
     expect(endState['todoId'][0].isDone).toBe(true)
 })
 test('new array with new task added', () => {
-
-    const startState: TaskStateType = {
-        'todoId': [
-            {id: 'taskId', title: 'HTML&CSS', isDone: true},
-            {id: 'taskId2', title: 'JS', isDone: true}
-        ],
-        'todoId2': [
-            {id: 'taskId3', title: 'bread', isDone: true},
-            {id: 'taskId4', title: 'milk', isDone: false}
-        ]
-    }
-
     const action = addTodolistAC('titles')
     const endState = taskReducer(startState, action)
 
@@ -106,17 +61,6 @@ test('new array with new task added', () => {
 })
 
 test('todolist removed', () => {
-    const startState: TaskStateType = {
-        'todoId': [
-            {id: 'taskId', title: 'HTML&CSS', isDone: true},
-            {id: 'taskId2', title: 'JS', isDone: true}
-        ],
-        'todoId2': [
-            {id: 'taskId3', title: 'bread', isDone: true},
-            {id: 'taskId4', title: 'milk', isDone: false}
-        ]
-    }
-
     const action = removeTodolistAC('todoId2')
     const endState = taskReducer(startState, action)
 
