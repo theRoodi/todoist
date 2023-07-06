@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {AddItemForm} from './AddItemForm';
 import {
@@ -38,9 +38,9 @@ export function AppWithRedux() {
     const todoLists = useSelector<RootStateType, Array<TodoListType>>(state => state.todoLists)
 
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
-    }
+    }, [dispatch])
 
     const darkMode = isDarkMode ? 'dark' : 'light'
 
