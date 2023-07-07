@@ -32,6 +32,7 @@ export type TodoListType = {
 export type TaskStateType = {
     [key: string]: Array<TasksType>
 }
+
 export function AppWithRedux() {
 
     const dispatch = useDispatch()
@@ -103,5 +104,3 @@ export function AppWithRedux() {
 
     );
 }
-
-export default AppWithRedux;

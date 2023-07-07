@@ -26,7 +26,13 @@ type ChangeTaskStatusType = {
     isDone: boolean
 }
 
-type ActionType = RemoveTaskType | AddTaskType | ChangeTaskTitleType | ChangeTaskStatusType | AddTodolistType | RemoveTodolistType;
+type ActionType =
+    RemoveTaskType
+    | AddTaskType
+    | ChangeTaskTitleType
+    | ChangeTaskStatusType
+    | AddTodolistType
+    | RemoveTodolistType;
 
 
 const initialState: TaskStateType = {}
@@ -44,7 +50,7 @@ export const taskReducer = (state = initialState, action: ActionType): TaskState
             const stateCopy = {...state}
             const tasks = stateCopy[action.idTodo]
             const newTask = {id: v1(), title: action.title, isDone: false}
-            const newTasks =[newTask, ...tasks]
+            const newTasks = [newTask, ...tasks]
             stateCopy[action.idTodo] = newTasks
             return stateCopy
         }
@@ -80,7 +86,7 @@ export const removeTaskAC = (idTask: string, idTodo: string): RemoveTaskType => 
     return {type: 'REMOVE-TASK', idTask, idTodo}
 }
 
-export const addTaskAC = (title: string, idTodo: string ): AddTaskType => {
+export const addTaskAC = (title: string, idTodo: string): AddTaskType => {
     return {type: 'ADD-TASK', idTodo, title}
 }
 export const changeTaskTitleAC = (idTodo: string, taskId: string, title: string): ChangeTaskTitleType => {
