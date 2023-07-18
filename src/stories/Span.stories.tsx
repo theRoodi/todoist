@@ -1,12 +1,23 @@
-import React, {ChangeEvent, memo, useState} from 'react';
+import type {Meta, StoryObj} from '@storybook/react';
+import React, {ChangeEvent, useState} from 'react';
+import {Task} from '../Task';
+import {EditableSpan, EditableSpanPropsType} from '../EditableSpan';
+import {action} from '@storybook/addon-actions';
 import {TextField} from '@mui/material';
 
-export type EditableSpanPropsType = {
-    title: string
-    onChangeTitle: (value: string) => void
-}
-export const EditableSpan = memo((props: EditableSpanPropsType) => {
+const meta: Meta<typeof EditableSpan> = {
+    title: 'todo/EditableSpan',
+    component: EditableSpan,
+    tags: ['autodocs'],
+    args: {
+        title: 'title',
+        onChangeTitle: action('title changed')
+    }
+};
+export default meta
+type Story = StoryObj<typeof EditableSpan>;
 
+const Comp = (props: EditableSpanPropsType) => {
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState('')
     const activateEditMode = () => {
@@ -27,4 +38,8 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
                          onChange={onChangeHandler}/>
             : <span onDoubleClick={activateEditMode}>{props.title}</span>
     )
-})
+}
+
+export const EditableSpanStory: Story = {
+    render: (args) => <Comp title={args.title} onChangeTitle={args.onChangeTitle}/>
+}
