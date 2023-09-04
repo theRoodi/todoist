@@ -1,6 +1,7 @@
 {
   "name": "1-lesson",
   "version": "0.1.0",
+  "homepage": "http://theroodi.github.io/todoist",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -17,6 +18,7 @@
     "@types/react-redux": "^7.1.25",
     "@types/uuid": "^9.0.1",
     "axios": "^1.4.0",
+    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",
@@ -34,7 +36,9 @@
     "storybook": "storybook dev -p 9009",
     "build-storybook": "storybook build",
     "jest:integration": "jest -c integration/jest.config.js",
-    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration"
+    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

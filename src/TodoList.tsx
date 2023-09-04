@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {AddItemForm} from './AddItemForm';
+import {AddItemForm} from './AddItemForm/AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, IconButton, List} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';

@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react';
-import './App.css';
-import {AddItemForm} from './AddItemForm/AddItemForm';
+import '../App.css';
+import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {
     AppBar,
     Button,
@@ -17,10 +17,11 @@ import {
     Typography
 } from '@mui/material';
 import {Menu} from '@mui/icons-material';
-import {addTodolistAC,} from './state/todo-lists-reducer';
+import {addTodolistAC,} from '../state/todo-lists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootStateType} from './state/store';
-import {TasksType, Todolist} from './TodoList';
+import {RootStateType} from '../state/store';
+import {TasksType, Todolist} from '../TodoList';
+import {useAppWithRedux} from './hooks/useAppWithRedux';
 
 export type FilterType = 'all' | 'completed' | 'active'
 export type TodoListType = {
@@ -35,21 +36,13 @@ export type TaskStateType = {
 
 export function AppWithRedux() {
 
-    const dispatch = useDispatch()
-    const todoLists = useSelector<RootStateType, Array<TodoListType>>(state => state.todoLists)
-
-    const [isDarkMode, setDarkMode] = useState<boolean>(false)
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
-    }, [dispatch])
-
-    const darkMode = isDarkMode ? 'dark' : 'light'
-
-    const customTheme = createTheme({
-        palette: {
-            mode: darkMode
-        }
-    })
+    const {
+        todoLists,
+        isDarkMode,
+        addTodolist,
+        customTheme,
+        setDark
+    } = useAppWithRedux()
 
 
     return (
@@ -72,7 +65,7 @@ export function AppWithRedux() {
                         <FormGroup>
                             <FormControlLabel
                                 control={<Switch defaultChecked={false} onChange={(e) =>
-                                    setDarkMode(e.currentTarget.checked)}/>}
+                                    setDark(e.currentTarget.checked)}/>}
                                 label={isDarkMode ? 'Go to Light' : 'Go to Dark'}
                             />
                         </FormGroup>
