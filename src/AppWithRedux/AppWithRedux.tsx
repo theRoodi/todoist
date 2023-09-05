@@ -1,11 +1,10 @@
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import '../App.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {
     AppBar,
     Button,
     Container,
-    createTheme,
     CssBaseline,
     FormControlLabel,
     FormGroup,
@@ -17,25 +16,15 @@ import {
     Typography
 } from '@mui/material';
 import {Menu} from '@mui/icons-material';
-import {addTodolistAC,} from '../state/todo-lists-reducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootStateType} from '../state/store';
-import {TasksType, Todolist} from '../TodoList';
+import {Todolist} from '../TodoList';
 import {useAppWithRedux} from './hooks/useAppWithRedux';
-
-export type FilterType = 'all' | 'completed' | 'active'
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterType
-}
+import {TaskType} from '../api/todolist-api';
 
 export type TaskStateType = {
-    [key: string]: Array<TasksType>
+    [key: string]: Array<TaskType>
 }
 
 export function AppWithRedux() {
-
     const {
         todoLists,
         isDarkMode,

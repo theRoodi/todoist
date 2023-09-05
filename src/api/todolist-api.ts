@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+export type FilterType = 'all' | 'completed' | 'active'
 
 export type TodoListType = {
     id: string
@@ -20,7 +21,7 @@ type ResponseTaskType<T = {}> = {
     messages: Array<string>
 }
 
-type TaskType = {
+export type TaskType = {
     description: string
     title: string
     completed: boolean
@@ -48,6 +49,7 @@ type UpdateTaskType = {
     startDate: string
     deadline: string
 }
+
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',

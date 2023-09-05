@@ -3,13 +3,13 @@ import { store} from './state/store';
 import React from 'react';
 import {combineReducers, legacy_createStore} from 'redux';
 import {taskReducer} from './state/task-reducer';
-import {todoListsReducer} from './state/todo-lists-reducer';
+import {todolistsReducer} from './state/todolists-reducer';
 import {v1} from 'uuid';
 
 export type RootStateType = ReturnType<typeof rootReducer>
 const rootReducer = combineReducers({
     tasks: taskReducer,
-    todo: todoListsReducer
+    todo: todolistsReducer
 })
 
 const state = {
@@ -29,7 +29,7 @@ const state = {
     }
 }
 
-export const storybookStore = legacy_createStore(rootReducer, state as RootStateType)
+export const storybookStore = legacy_createStore(rootReducer, state as unknown as RootStateType)
 
 export const ReduxStoreProvider = (fn: () => React.ReactNode) => {
     return <Provider store={storybookStore}>{fn()}</Provider>

@@ -34,7 +34,7 @@ const Comp = (props: AddItemFormPropsType) => {
     const [error, setError] = useState<string | null>(null)
     const addTask = useCallback((title: string) => {
         if (title.trim() !== '') {
-            props.addItem(title.trim())
+            // props.addItem(title.trim())
             setTitle('')
         } else {
             setError('Enter title!')

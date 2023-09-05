@@ -20,10 +20,10 @@ export default meta
 type Story = StoryObj<typeof Task>;
 
 const TaskComp = () => {
-    const task = useSelector<RootStateType,TasksType >(state => state.tasks['todo1'][0])
-    return <Task task={task} todoId={'todo1'} />
+    // const task = useSelector<RootStateType,TasksType >(state => state.tasks['todo1'][0])
+    // return <Task task={task} todoId={'todo1'} />
 }
 
 export const TaskStory: Story = {
-    render: (args) => <TaskComp />
+    // render: (args) => <TaskComp />
 }

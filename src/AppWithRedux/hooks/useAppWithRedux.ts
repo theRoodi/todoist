@@ -1,13 +1,12 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {RootStateType} from '../../state/store';
-import {useCallback, useState} from 'react';
-import {addTodolistAC} from '../../state/todo-lists-reducer';
+import {useAppDispatch, useAppSelector} from '../../state/store';
+import {useCallback, useEffect, useState} from 'react';
+import {addTodolistAC, getTodo, TodolistDomainType} from '../../state/todolists-reducer';
 import {createTheme} from '@mui/material';
-import {TodoListType} from '../AppWithRedux';
+
 
 export const useAppWithRedux = () => {
-    const dispatch = useDispatch()
-    const todoLists = useSelector<RootStateType, Array<TodoListType>>(state => state.todoLists)
+    const dispatch = useAppDispatch()
+    const todoLists = useAppSelector<Array<TodolistDomainType>>(state => state.todoLists)
 
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
     const addTodolist = useCallback((title: string) => {
@@ -21,11 +20,13 @@ export const useAppWithRedux = () => {
             mode: darkMode
         }
     })
-
-    const setDark = (value:boolean) => {
+    const setDark = (value: boolean) => {
         setDarkMode(value)
     }
 
+    useEffect(() => {
+        dispatch(getTodo())
+    }, [])
 
 
     return {
