@@ -41,7 +41,7 @@ type GetTaskResponseType = {
     items: Array<TaskType>
 }
 
-type UpdateTaskType = {
+export type UpdateTaskType = {
     title: string
     description: string
     status: number

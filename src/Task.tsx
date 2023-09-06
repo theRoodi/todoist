@@ -2,7 +2,7 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton, ListItem} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import {EditableSpan} from './EditableSpan';
-import {changeTaskStatusAC, changeTaskTitleAC, deleteTask} from './state/task-reducer';
+import {changeTaskTitleAC, deleteTask, updateTask} from './state/task-reducer';
 import {TaskType} from './api/todolist-api';
 import {useAppDispatch} from './state/store';
 
@@ -16,7 +16,10 @@ export const Task = memo((props: TaskPropsType) => {
 
     const onRemoveHandler = () => dispatch(deleteTask(props.todoId, props.task.id))
 
-    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => dispatch(changeTaskStatusAC(props.todoId, props.task.id, e.currentTarget.checked))
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const isDoneValue = e.currentTarget.checked
+        dispatch(updateTask(props.todoId, props.task.id, isDoneValue ? 2 : 0))
+    }
 
     const onChangeTitle = (title: string) => dispatch(changeTaskTitleAC(props.todoId, props.task.id, title))
 
@@ -30,7 +33,7 @@ export const Task = memo((props: TaskPropsType) => {
                 </IconButton>
             }
         >
-            <Checkbox checked={props.task.completed} onChange={onChangeStatusHandler} edge="start"/>
+            <Checkbox checked={props.task.status === 2} onChange={onChangeStatusHandler} edge="start"/>
             <EditableSpan title={props.task.title} onChangeTitle={onChangeTitle}/>
 
         </ListItem>
