@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from '../../state/store';
 import {useCallback, useEffect, useState} from 'react';
-import {addTodolistAC, getTodo, TodolistDomainType} from '../../state/todolists-reducer';
+import {createTodo, getTodo, TodolistDomainType} from '../../state/todolists-reducer';
 import {createTheme} from '@mui/material';
 
 
@@ -10,7 +10,7 @@ export const useAppWithRedux = () => {
 
     const [isDarkMode, setDarkMode] = useState<boolean>(false)
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+        dispatch(createTodo(title))
     }, [dispatch])
 
     const darkMode = isDarkMode ? 'dark' : 'light'

@@ -111,3 +111,23 @@ export const getTodo = () => (dispatch: Dispatch) => {
             dispatch(setTodolistAC(res.data))
         })
 }
+
+export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
+    todolistAPI.delete(todoId)
+        .then(res => {
+            dispatch(removeTodolistAC(todoId))
+        })
+}
+export const createTodo = (title: string) => (dispatch: Dispatch) => {
+    todolistAPI.addTodo(title)
+        .then(res => {
+            dispatch(addTodolistAC(title))
+        })
+}
+
+export const changeTodoTitle = (todoId: string, title: string) => (dispatch: Dispatch) => {
+    todolistAPI.updateTodolist(todoId, title)
+        .then(res => {
+            dispatch(changeTodolistTitleAC(title, todoId))
+        })
+}

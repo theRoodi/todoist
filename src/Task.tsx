@@ -2,7 +2,7 @@ import React, {ChangeEvent, memo} from 'react';
 import {Checkbox, IconButton, ListItem} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import {EditableSpan} from './EditableSpan';
-import {changeTaskTitleAC, deleteTask, updateTask} from './state/task-reducer';
+import {changeTaskTitleAC, deleteTask, updateTask, updateTitleTask} from './state/task-reducer';
 import {TaskType} from './api/todolist-api';
 import {useAppDispatch} from './state/store';
 
@@ -21,7 +21,7 @@ export const Task = memo((props: TaskPropsType) => {
         dispatch(updateTask(props.todoId, props.task.id, isDoneValue ? 2 : 0))
     }
 
-    const onChangeTitle = (title: string) => dispatch(changeTaskTitleAC(props.todoId, props.task.id, title))
+    const onChangeTitle = (title: string) => dispatch(updateTitleTask(props.todoId, props.task.id, title))
 
     return (
         <ListItem

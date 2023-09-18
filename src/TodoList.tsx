@@ -5,7 +5,7 @@ import {Button, IconButton, List} from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import {useAppDispatch, useAppSelector} from './state/store';
 import {addTask, getTask} from './state/task-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from './state/todolists-reducer';
+import {changeTodolistFilterAC, changeTodolistTitleAC, changeTodoTitle, deleteTodo} from './state/todolists-reducer';
 import {Task} from './Task';
 import {TaskType} from './api/todolist-api';
 
@@ -31,8 +31,8 @@ export const Todolist = memo((props: PropsType) => {
     }, [])
 
     const addItem = useCallback((title: string) => dispatch(addTask(props.todoId, title)), [dispatch, props.todoId])
-    const removeTodolist = useCallback(() => dispatch(removeTodolistAC(props.todoId)), [dispatch, props.todoId])
-    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodolistTitleAC(title, props.todoId)), [dispatch, props.todoId])
+    const removeTodolist = useCallback(() => dispatch(deleteTodo(props.todoId)), [dispatch, props.todoId])
+    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoTitle( props.todoId, title)), [dispatch, props.todoId])
 
     const onAllChangeFilter = useCallback(() => dispatch(changeTodolistFilterAC('all', props.todoId)), [dispatch, props.todoId])
     const onActiveChangeFilter = useCallback(() => dispatch(changeTodolistFilterAC('active', props.todoId)), [dispatch, props.todoId])
