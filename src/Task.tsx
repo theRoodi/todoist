@@ -1,8 +1,10 @@
 import React, {ChangeEvent, memo} from 'react';
-import {Checkbox, IconButton, ListItem} from '@mui/material';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
+import Checkbox from '@mui/material/Checkbox';
 import ClearIcon from '@mui/icons-material/Clear';
 import {EditableSpan} from './EditableSpan';
-import {changeTaskTitleAC, deleteTask, updateTask, updateTitleTask} from './state/task-reducer';
+import {deleteTask, updateTask, updateTitleTask} from './state/task-reducer';
 import {TaskType} from './api/todolist-api';
 import {useAppDispatch} from './state/store';
 

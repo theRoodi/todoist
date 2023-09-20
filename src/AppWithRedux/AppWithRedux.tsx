@@ -1,24 +1,22 @@
 import React from 'react';
 import '../App.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
-import {
-    AppBar,
-    Button,
-    Container,
-    CssBaseline,
-    FormControlLabel,
-    FormGroup,
-    Grid,
-    IconButton,
-    Switch,
-    ThemeProvider,
-    Toolbar,
-    Typography
-} from '@mui/material';
-import {Menu} from '@mui/icons-material';
+import Menu from '@mui/icons-material/Menu';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
 import {Todolist} from '../TodoList';
 import {useAppWithRedux} from './hooks/useAppWithRedux';
 import {TaskType} from '../api/todolist-api';
+import {ThemeProvider} from '@mui/material';
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>

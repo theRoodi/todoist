@@ -1,11 +1,13 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {AddItemForm} from './AddItemForm/AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, IconButton, List} from '@mui/material';
+import List from '@mui/material/List';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import ClearIcon from '@mui/icons-material/Clear';
 import {useAppDispatch, useAppSelector} from './state/store';
 import {addTask, getTask} from './state/task-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleAC, changeTodoTitle, deleteTodo} from './state/todolists-reducer';
+import {changeTodolistFilterAC, changeTodoTitle, deleteTodo} from './state/todolists-reducer';
 import {Task} from './Task';
 import {TaskType} from './api/todolist-api';
 
