@@ -1,6 +1,7 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodoListType} from '../api/todolist-api';
 import {Dispatch} from 'redux';
+import {setAppStatusAC, SetAppStatusACType} from '../AppWithRedux/app-reducer';
 
 
 export type FilterType = 'all' | 'active' | 'completed';
@@ -41,6 +42,7 @@ type ActionType =
     | ChangeTodolistTitleType
     | ChangeTodolistFilterType
     | SetTodolistType
+    | SetAppStatusACType
 
 
 const initialState: Array<TodolistDomainType> = []
@@ -82,7 +84,6 @@ export const todolistsReducer = (state = initialState, action: ActionType): Arra
             return [...state]
 
         }
-
         default:
             return state
     }
@@ -109,25 +110,32 @@ export const getTodo = () => (dispatch: Dispatch) => {
     todolistAPI.get()
         .then((res) => {
             dispatch(setTodolistAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
 export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.delete(todoId)
         .then(res => {
             dispatch(removeTodolistAC(todoId))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 export const createTodo = (title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.addTodo(title)
         .then(res => {
             dispatch(addTodolistAC(title))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
 export const changeTodoTitle = (todoId: string, title: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.updateTodolist(todoId, title)
         .then(res => {
             dispatch(changeTodolistTitleAC(title, todoId))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }

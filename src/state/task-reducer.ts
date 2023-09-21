@@ -4,6 +4,7 @@ import {AddTodolistType, RemoveTodolistType, SetTodolistType} from './todolists-
 import {Dispatch} from 'redux';
 import {TaskType, todolistAPI, UpdateTaskType} from '../api/todolist-api';
 import {RootStateType} from './store';
+import {setAppStatusAC, SetAppStatusACType} from '../AppWithRedux/app-reducer';
 
 type RemoveTaskType = {
     type: 'REMOVE-TASK'
@@ -43,6 +44,7 @@ type ActionType =
     | RemoveTodolistType
     | SetTodolistType
     | SetTasksType
+    | SetAppStatusACType
 
 
 const initialState: TaskStateType = {}
@@ -130,9 +132,12 @@ export const setTaskAC = (tasks: TaskType[], todolistId: string): SetTasksType =
     return {type: 'SET-TASK', tasks, todolistId} as const
 }
 export const getTask = (todoId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     todolistAPI.getTasks(todoId)
         .then((res) => {
             dispatch(setTaskAC(res.data.items, todoId))
+            dispatch(setAppStatusAC('succeeded'))
+
         })
 }
 
@@ -140,6 +145,7 @@ export const deleteTask = (todoId: string, taskId: string) => (dispatch: Dispatc
     todolistAPI.deleteTask(todoId, taskId)
         .then(res => {
             dispatch(removeTaskAC(taskId, todoId))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
@@ -147,9 +153,10 @@ export const addTask = (todoId: string, title: string) => (dispatch: Dispatch) =
     todolistAPI.createTask(todoId, title)
         .then(res => {
             dispatch(addTaskAC(title, todoId))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
-export const updateTask = (todoId: string, taskId: string, status: number) => (dispatch: Dispatch, getState: ()=> RootStateType) => {
+export const updateTask = (todoId: string, taskId: string, status: number) => (dispatch: Dispatch, getState: () => RootStateType) => {
     const task = getState().tasks[todoId].find(el => el.id === taskId)
     if (task) {
         const item: UpdateTaskType = {
@@ -162,13 +169,13 @@ export const updateTask = (todoId: string, taskId: string, status: number) => (d
         }
         todolistAPI.updateTask(todoId, taskId, item)
             .then(res => {
-                dispatch(changeTaskStatusAC(todoId,taskId, status))
+                dispatch(changeTaskStatusAC(todoId, taskId, status))
             })
     }
 
 }
 
-export const updateTitleTask = (todoId: string, taskId: string, title: string) => (dispatch: Dispatch, getState: ()=> RootStateType) => {
+export const updateTitleTask = (todoId: string, taskId: string, title: string) => (dispatch: Dispatch, getState: () => RootStateType) => {
     const task = getState().tasks[todoId].find(el => el.id === taskId)
     if (task) {
         const item: UpdateTaskType = {
@@ -181,7 +188,7 @@ export const updateTitleTask = (todoId: string, taskId: string, title: string) =
         }
         todolistAPI.updateTask(todoId, taskId, item)
             .then(res => {
-                dispatch(changeTaskTitleAC(todoId,taskId, title))
+                dispatch(changeTaskTitleAC(todoId, taskId, title))
             })
     }
 

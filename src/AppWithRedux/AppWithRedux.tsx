@@ -16,7 +16,9 @@ import Toolbar from '@mui/material/Toolbar';
 import {Todolist} from '../TodoList';
 import {useAppWithRedux} from './hooks/useAppWithRedux';
 import {TaskType} from '../api/todolist-api';
-import {ThemeProvider} from '@mui/material';
+import {LinearProgress, ThemeProvider} from '@mui/material';
+import {RequestStatusType} from './app-reducer';
+import {useAppSelector} from '../state/store';
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -31,6 +33,7 @@ export function AppWithRedux() {
         setDark
     } = useAppWithRedux()
 
+    const status = useAppSelector<RequestStatusType>((state) => state.app.status)
 
     return (
         <ThemeProvider theme={customTheme}>
@@ -58,6 +61,7 @@ export function AppWithRedux() {
                         </FormGroup>
                         <Button color={'inherit'}>Login</Button>
                     </Toolbar>
+                    {status === 'loading' && <LinearProgress color="secondary" />}
                 </AppBar>
                 <Container fixed>
                     <Grid container sx={{p: '15px 0'}}>

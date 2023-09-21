@@ -26,7 +26,7 @@ export const useAppWithRedux = () => {
 
     useEffect(() => {
         dispatch(getTodo())
-    }, [])
+    }, [dispatch])
 
 
     return {
