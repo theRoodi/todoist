@@ -3,14 +3,14 @@ import {TodolistDomainType} from './todolists-reducer';
 
 test('ids equals', () => {
 
-    const startTaskState: TaskStateType = {}
-    const startTodolistState: Array<TodolistDomainType> = [{
-        id: '',
-        title: '',
-        filter: 'all',
-        addedDate: '',
-        order: 0
-    }]
+    // const startTaskState: TaskStateType = {}
+    // const startTodolistState: Array<TodolistDomainType> = [{
+    //     id: '',
+    //     title: '',
+    //     filter: 'all',
+    //     addedDate: '',
+    //     order: 0
+    // }]
 
     // const action = addTodolistAC('titles')
     // const endTaskState = taskReducer(startTaskState, action)

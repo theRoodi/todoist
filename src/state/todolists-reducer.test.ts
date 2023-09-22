@@ -15,12 +15,12 @@ beforeEach(()=> {
     todoId = v1()
     todoId2 = v1()
     startState = [
-        {id: todoId, title: 'what to learn', filter: 'all',
-            addedDate: '',
-            order: 0},
-        {id: todoId2, title: 'what to buy', filter: 'all',
-            addedDate: '',
-            order: 0}
+        // {id: todoId, title: 'what to learn', filter: 'all',
+        //     addedDate: '',
+        //     order: 0},
+        // {id: todoId2, title: 'what to buy', filter: 'all',
+        //     addedDate: '',
+        //     order: 0}
     ]
 })
 

@@ -19,6 +19,7 @@ import {TaskType} from '../api/todolist-api';
 import {LinearProgress, ThemeProvider} from '@mui/material';
 import {RequestStatusType} from './app-reducer';
 import {useAppSelector} from '../state/store';
+import {ErrorSnackbar} from '../ErrorSnakbar/ErrorSnackbar';
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -75,14 +76,16 @@ export function AppWithRedux() {
                                         <Todolist
                                             title={tl.title}
                                             todoId={tl.id}
-                                            filter={tl.filter}/>
+                                            filter={tl.filter}
+                                            entityStatus={tl.entityStatus}
+                                        />
                                     </Grid>
                                 )
                             })
                         }
                     </Grid>
                 </Container>
-
+                <ErrorSnackbar />
             </div>
         </ThemeProvider>
 

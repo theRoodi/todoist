@@ -10,6 +10,7 @@ import {addTask, getTask} from './state/task-reducer';
 import {changeTodolistFilterAC, changeTodoTitle, deleteTodo} from './state/todolists-reducer';
 import {Task} from './Task';
 import {TaskType} from './api/todolist-api';
+import {RequestStatusType} from './AppWithRedux/app-reducer';
 
 
 export type TasksType = {
@@ -22,6 +23,7 @@ export type PropsType = {
     title: string
     todoId: string
     filter: string
+    entityStatus: RequestStatusType
 }
 export const Todolist = memo((props: PropsType) => {
 
@@ -30,7 +32,7 @@ export const Todolist = memo((props: PropsType) => {
 
     useEffect(() => {
         dispatch(getTask(props.todoId))
-    }, [dispatch])
+    }, [dispatch, props.todoId])
 
     const addItem = useCallback((title: string) => dispatch(addTask(props.todoId, title)), [dispatch, props.todoId])
     const removeTodolist = useCallback(() => dispatch(deleteTodo(props.todoId)), [dispatch, props.todoId])
@@ -52,7 +54,7 @@ export const Todolist = memo((props: PropsType) => {
     return (
         <div className="todolist">
             <h3><EditableSpan title={props.title} onChangeTitle={changeTodolistTitle}/>
-                <IconButton onClick={removeTodolist}>
+                <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
                     <ClearIcon/>
                 </IconButton>
             </h3>
