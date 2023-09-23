@@ -1,7 +1,14 @@
 import {v1} from 'uuid';
 import {todolistAPI, TodoListType} from '../api/todolist-api';
 import {Dispatch} from 'redux';
-import {RequestStatusType, setAppErrorAC, setAppStatusAC, SetAppStatusACType} from '../AppWithRedux/app-reducer';
+import {
+    RequestStatusType,
+    setAppErrorAC,
+    SetAppErrorACType,
+    setAppStatusAC,
+    SetAppStatusACType
+} from '../AppWithRedux/app-reducer';
+import {RESULT_CODE} from './task-reducer';
 
 
 export type FilterType = 'all' | 'active' | 'completed';
@@ -50,6 +57,7 @@ type ActionType =
     | SetTodolistType
     | SetAppStatusACType
     | ReturnType<typeof setEntityStatusAC>
+    | SetAppErrorACType
 
 
 const initialState: Array<TodolistDomainType> = []
@@ -126,7 +134,6 @@ export const getTodo = () => (dispatch: Dispatch) => {
         .then((res) => {
             dispatch(setTodolistAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setAppErrorAC('ERROR'))
         })
 }
 
@@ -136,9 +143,23 @@ export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
 
     todolistAPI.delete(todoId)
         .then(res => {
-            dispatch(removeTodolistAC(todoId))
-            dispatch(setAppStatusAC('succeeded'))
-        })
+            if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+                dispatch(removeTodolistAC(todoId))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                const error = res.data.messages[0]
+                if (error) {
+                    dispatch(setAppErrorAC(error))
+                } else {
+                    dispatch(setAppErrorAC('Please text me 👻'))
+                }
+            }
+            dispatch(setAppStatusAC('failed'))
+            dispatch(setEntityStatusAC(todoId, 'failed'))
+        }).catch(() => {
+        dispatch(setAppStatusAC('failed'))
+        dispatch(setEntityStatusAC(todoId, 'failed'))
+    })
 }
 export const createTodo = (title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))

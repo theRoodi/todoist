@@ -62,7 +62,7 @@ export function AppWithRedux() {
                         </FormGroup>
                         <Button color={'inherit'}>Login</Button>
                     </Toolbar>
-                    {status === 'loading' && <LinearProgress color="secondary" />}
+                    {status === 'loading' && <LinearProgress color="secondary"/>}
                 </AppBar>
                 <Container fixed>
                     <Grid container sx={{p: '15px 0'}}>
@@ -85,7 +85,7 @@ export function AppWithRedux() {
                         }
                     </Grid>
                 </Container>
-                <ErrorSnackbar />
+                <ErrorSnackbar/>
             </div>
         </ThemeProvider>
 

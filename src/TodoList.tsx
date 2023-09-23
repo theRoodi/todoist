@@ -36,7 +36,7 @@ export const Todolist = memo((props: PropsType) => {
 
     const addItem = useCallback((title: string) => dispatch(addTask(props.todoId, title)), [dispatch, props.todoId])
     const removeTodolist = useCallback(() => dispatch(deleteTodo(props.todoId)), [dispatch, props.todoId])
-    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoTitle( props.todoId, title)), [dispatch, props.todoId])
+    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoTitle(props.todoId, title)), [dispatch, props.todoId])
 
     const onAllChangeFilter = useCallback(() => dispatch(changeTodolistFilterAC('all', props.todoId)), [dispatch, props.todoId])
     const onActiveChangeFilter = useCallback(() => dispatch(changeTodolistFilterAC('active', props.todoId)), [dispatch, props.todoId])
@@ -58,7 +58,7 @@ export const Todolist = memo((props: PropsType) => {
                     <ClearIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addItem}/>
+            <AddItemForm addItem={addItem} disabled={props.entityStatus === 'loading'}/>
             <List>
                 {filteredTasks.map(task => <Task key={task.id}
                                                  task={task}

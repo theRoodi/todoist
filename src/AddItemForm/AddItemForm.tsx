@@ -6,6 +6,7 @@ import {useAddItemForm} from './hooks/useAddItemForm';
 
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
     const {title, error, changeTitle, onKeyPressHandler, addTask} = useAddItemForm(props.addItem)
@@ -19,8 +20,9 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                 onKeyPress={onKeyPressHandler}
                 error={!!error}
                 helperText={error && 'Enter title!'}
+                disabled={props.disabled}
             />
-            <IconButton onClick={() => addTask(title)} size="small">
+            <IconButton onClick={() => addTask(title)} size="small" disabled={props.disabled}>
                 <AddIcon/>
             </IconButton>
             {/*{error && <div className={'errorMessage'}>{error}</div>}*/}
