@@ -154,10 +154,34 @@ export const getTask = (todoId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     todolistAPI.getTasks(todoId)
         .then((res) => {
-            dispatch(setTaskAC(res.data.items, todoId))
-            dispatch(setAppStatusAC('succeeded'))
+            if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+                dispatch(setTaskAC(res.data.items, todoId))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        }).catch((e: AxiosError<ErrorType>) => {
+        const errorMsg = e.response ? e.response.data.error : e.message
+        handleServerNetworkError(errorMsg, dispatch)
 
-        })
+
+    })
+    // try {
+    //     const response = await todolistAPI.getTasks(todoId)
+    //     if (response.data.resultCode === RESULT_CODE.SUCCESS) {
+    //         dispatch(setTaskAC(response.data.items, todoId))
+    //         dispatch(setAppStatusAC('succeeded'))
+    //     } else {
+    //         handleServerAppError(response.data, dispatch)
+    //     }
+    // } catch (e) {
+    //     if (axios.isAxiosError<ErrorType>(e)) {
+    //         const errorMsg = e.response ? e.response.data.error : e.message
+    //         handleServerNetworkError(errorMsg, dispatch)
+    //     } else {
+    //         handleServerNetworkError((e as Error).message, dispatch)
+    //     }
+    // }
 }
 
 export const deleteTask = (todoId: string, taskId: string) => async (dispatch: Dispatch) => {
@@ -174,7 +198,7 @@ export const deleteTask = (todoId: string, taskId: string) => async (dispatch: D
         if (response.data.resultCode === RESULT_CODE.SUCCESS) {
             dispatch(removeTaskAC(taskId, todoId))
             dispatch(setAppStatusAC('succeeded'))
-        } else  {
+        } else {
             handleServerAppError(response.data, dispatch)
         }
     } catch (e) {
@@ -197,11 +221,8 @@ export const addTask = (todoId: string, title: string) => (dispatch: Dispatch) =
             } else {
                 handleServerAppError(res.data, dispatch)
             }
-        }).catch((e: AxiosError<ErrorType>) => {
-        const errorMsg = e.response ? e.response.data.error : e.message
-        handleServerNetworkError(errorMsg, dispatch)
-
-    })
+        }).catch((e) => {
+        handleServerNetworkError(e, dispatch) })
 }
 export const updateTask = (todoId: string, taskId: string, status: number) => (dispatch: Dispatch, getState: () => RootStateType) => {
     const task = getState().tasks[todoId].find(el => el.id === taskId)

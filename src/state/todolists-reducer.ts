@@ -9,6 +9,7 @@ import {
     SetAppStatusACType
 } from '../AppWithRedux/app-reducer';
 import {RESULT_CODE} from './task-reducer';
+import {handleServerNetworkError} from '../utils/error-utils';
 
 
 export type FilterType = 'all' | 'active' | 'completed';
@@ -134,7 +135,8 @@ export const getTodo = () => (dispatch: Dispatch) => {
         .then((res) => {
             dispatch(setTodolistAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
-        })
+        }).catch((e) => {
+        handleServerNetworkError(e, dispatch)})
 }
 
 export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
