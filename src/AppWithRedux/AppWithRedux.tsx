@@ -13,13 +13,16 @@ import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
-import {Todolist} from '../TodoList';
+import {PropsType, Todolist} from '../TodoList';
 import {useAppWithRedux} from './hooks/useAppWithRedux';
 import {TaskType} from '../api/todolist-api';
 import {LinearProgress, ThemeProvider} from '@mui/material';
 import {RequestStatusType} from './app-reducer';
 import {useAppSelector} from '../state/store';
 import {ErrorSnackbar} from '../ErrorSnakbar/ErrorSnackbar';
+import {Login} from '../Login/Login';
+import {TodolistDomainType} from '../state/todolists-reducer';
+import {Navigate, Route, Routes} from 'react-router-dom';
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -40,6 +43,7 @@ export function AppWithRedux() {
         <ThemeProvider theme={customTheme}>
             <CssBaseline/>
             <div className="App">
+                <ErrorSnackbar/>
                 <AppBar position={'static'}>
                     <Toolbar>
                         <IconButton
@@ -65,29 +69,46 @@ export function AppWithRedux() {
                     {status === 'loading' && <LinearProgress color="secondary"/>}
                 </AppBar>
                 <Container fixed>
-                    <Grid container sx={{p: '15px 0'}}>
-                        <AddItemForm addItem={addTodolist}/>
-                    </Grid>
-                    <Grid container spacing={3}>
-                        {
-                            todoLists.map(tl => {
-                                return (
-                                    <Grid key={tl.id} item>
-                                        <Todolist
-                                            title={tl.title}
-                                            todoId={tl.id}
-                                            filter={tl.filter}
-                                            entityStatus={tl.entityStatus}
-                                        />
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
+                    <Routes>
+                        <Route path={'/login'} element={<Login/>}/>
+                        <Route path={'/'} element={<TodolistList addTodolist={addTodolist} todoLists={todoLists}/>}/>
+                        <Route path={'404'} element={<h1>404 PAGE NOT FOUND</h1>}/>
+                        <Route path={'*'} element={<Navigate to={'/404'}/>}/>
+                    </Routes>
                 </Container>
-                <ErrorSnackbar/>
             </div>
         </ThemeProvider>
 
     );
+}
+
+export type TodoListsType = {
+    addTodolist: (title: string) => void
+    todoLists: Array<TodolistDomainType>
+}
+
+
+export const TodolistList = (props: TodoListsType) => {
+    return (
+        <>
+            <Grid container sx={{p: '15px 0'}}>
+                <AddItemForm addItem={props.addTodolist}/>
+            </Grid>
+            <Grid container spacing={3}>
+                {
+                    props.todoLists.map(tl => {
+                        return (
+                            <Grid key={tl.id} item>
+                                <Todolist
+                                    title={tl.title}
+                                    todoId={tl.id}
+                                    filter={tl.filter}
+                                    entityStatus={tl.entityStatus}
+                                />
+                            </Grid>
+                        )
+                    })
+                }
+            </Grid></>
+    )
 }

@@ -76,16 +76,24 @@ export const todolistAPI = {
     },
 
     getTasks(todolistId: string) {
-        return instance.get(`todo-lists/${todolistId}/tasks`)
+        return instance.get<GetTaskResponseType>(`todo-lists/${todolistId}/tasks`)
         // return instance.get<GetTaskResponseType>(`todo-lists/${todolistId}/tasks`)
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseTaskType<TaskType>>(`/todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseTaskType<{
+            item: TaskType;
+        }>>(`/todo-lists/${todolistId}/tasks`, {title})
     },
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseTaskType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTask(todolistId: string, taskId: string, item: UpdateTaskType) {
         return instance.put(`/todo-lists/${todolistId}/tasks/${taskId}`, item)
+    }
+}
+
+export const authAPI = {
+    login() {
+
     }
 }

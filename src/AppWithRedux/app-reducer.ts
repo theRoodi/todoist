@@ -1,11 +1,14 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
-const initialState = {
+const initialState: InitialStateType = {
     status: 'loading' as RequestStatusType,
-    error: null as null | string
+    error: null
 }
 
-type InitialStateType = typeof initialState
+type InitialStateType = {
+    status: RequestStatusType
+    error: string | null
+}
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
