@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../App.css';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import Menu from '@mui/icons-material/Menu';
@@ -16,13 +16,14 @@ import Toolbar from '@mui/material/Toolbar';
 import {PropsType, Todolist} from '../TodoList';
 import {useAppWithRedux} from './hooks/useAppWithRedux';
 import {TaskType} from '../api/todolist-api';
-import {LinearProgress, ThemeProvider} from '@mui/material';
+import {CircularProgress, LinearProgress, ThemeProvider} from '@mui/material';
 import {RequestStatusType} from './app-reducer';
-import {useAppSelector} from '../state/store';
+import {useAppDispatch, useAppSelector} from '../state/store';
 import {ErrorSnackbar} from '../ErrorSnakbar/ErrorSnackbar';
 import {Login} from '../Login/Login';
 import {TodolistDomainType} from '../state/todolists-reducer';
 import {Navigate, Route, Routes} from 'react-router-dom';
+import {logoutTC, meTC} from '../state/auth-reducer';
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
@@ -30,6 +31,7 @@ export type TaskStateType = {
 
 export function AppWithRedux() {
     const {
+        isLoggedIn,
         todoLists,
         isDarkMode,
         addTodolist,
@@ -38,6 +40,21 @@ export function AppWithRedux() {
     } = useAppWithRedux()
 
     const status = useAppSelector<RequestStatusType>((state) => state.app.status)
+    const isInit = useAppSelector((state) => state.app.isInit)
+    const dispatch = useAppDispatch()
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
+
+    useEffect(() => {
+        dispatch(meTC())
+    },[dispatch])
+
+    if (!isInit) {
+        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress />
+        </div>
+    }
 
     return (
         <ThemeProvider theme={customTheme}>
@@ -64,14 +81,14 @@ export function AppWithRedux() {
                                 label={isDarkMode ? 'Go to Light' : 'Go to Dark'}
                             />
                         </FormGroup>
-                        <Button color={'inherit'}>Login</Button>
+                        {isLoggedIn && <Button color={'inherit'} onClick={logoutHandler}>Logout</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress color="secondary"/>}
                 </AppBar>
                 <Container fixed>
                     <Routes>
                         <Route path={'/login'} element={<Login/>}/>
-                        <Route path={'/'} element={<TodolistList addTodolist={addTodolist} todoLists={todoLists}/>}/>
+                        <Route path={'/'} element={<TodolistList addTodolist={addTodolist} todoLists={todoLists} isLoggedIn={isLoggedIn}/>}/>
                         <Route path={'404'} element={<h1>404 PAGE NOT FOUND</h1>}/>
                         <Route path={'*'} element={<Navigate to={'/404'}/>}/>
                     </Routes>
@@ -85,10 +102,14 @@ export function AppWithRedux() {
 export type TodoListsType = {
     addTodolist: (title: string) => void
     todoLists: Array<TodolistDomainType>
+    isLoggedIn: boolean
 }
 
 
 export const TodolistList = (props: TodoListsType) => {
+    if (!props.isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    }
     return (
         <>
             <Grid container sx={{p: '15px 0'}}>

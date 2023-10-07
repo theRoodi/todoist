@@ -21,6 +21,9 @@ export type RemoveTodolistType = {
     type: 'REMOVE-TODOLIST'
     id: string
 }
+export type ClearDataActionType = {
+    type: 'CLEAR-DATA'
+}
 
 export type AddTodolistType = {
     type: 'ADD-TODOLIST'
@@ -59,6 +62,7 @@ type ActionType =
     | SetAppStatusACType
     | ReturnType<typeof setEntityStatusAC>
     | SetAppErrorACType
+    | ClearDataActionType
 
 
 const initialState: Array<TodolistDomainType> = []
@@ -104,6 +108,9 @@ export const todolistsReducer = (state = initialState, action: ActionType): Arra
         case 'SET-ENTITY-STATUS': {
             return state.map(tl => tl.id === action.todoId ? {...tl, entityStatus: action.status} : tl)
         }
+        case 'CLEAR-DATA': {
+            return []
+        }
         default:
             return state
     }
@@ -130,13 +137,18 @@ export const setEntityStatusAC = (todoId: string, status: RequestStatusType): Se
     return {type: 'SET-ENTITY-STATUS', status, todoId} as const
 }
 
+export const clearTodoDataAC = () => {
+    return {type: 'CLEAR-DATA'} as const
+}
+
 export const getTodo = () => (dispatch: Dispatch) => {
     todolistAPI.get()
         .then((res) => {
             dispatch(setTodolistAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
         }).catch((e) => {
-        handleServerNetworkError(e, dispatch)})
+        handleServerNetworkError(e, dispatch)
+    })
 }
 
 export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {

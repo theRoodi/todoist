@@ -12,7 +12,7 @@ export const useAppWithRedux = () => {
     const addTodolist = useCallback((title: string) => {
         dispatch(createTodo(title))
     }, [dispatch])
-
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const darkMode = isDarkMode ? 'dark' : 'light'
 
     const customTheme = createTheme({
@@ -30,6 +30,7 @@ export const useAppWithRedux = () => {
 
 
     return {
+        isLoggedIn,
         todoLists,
         isDarkMode,
         addTodolist,

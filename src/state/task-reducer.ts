@@ -1,5 +1,5 @@
 import {TaskStateType} from '../AppWithRedux/AppWithRedux';
-import {AddTodolistType, RemoveTodolistType, SetTodolistType} from './todolists-reducer';
+import {AddTodolistType, ClearDataActionType, RemoveTodolistType, SetTodolistType} from './todolists-reducer';
 import {Dispatch} from 'redux';
 import {TaskType, todolistAPI, UpdateTaskType} from '../api/todolist-api';
 import {RootStateType} from './store';
@@ -46,6 +46,7 @@ type ActionType =
     | SetTasksType
     | SetAppStatusACType
     | SetAppErrorACType
+    | ClearDataActionType
 
 export enum RESULT_CODE {
     SUCCESS = 0,
@@ -101,6 +102,9 @@ export const taskReducer = (state = initialState, action: ActionType): TaskState
             const stateCopy = {...state}
             delete stateCopy[action.id]
             return stateCopy
+        }
+        case 'CLEAR-DATA': {
+            return {}
         }
         default:
             return state
