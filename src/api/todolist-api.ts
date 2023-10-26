@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { LoginDataType } from "../Login/Login";
+import { LoginDataType } from "Login/Login";
 
 export type FilterType = "all" | "completed" | "active";
 

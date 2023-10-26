@@ -3,10 +3,10 @@ import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
-import { EditableSpan } from "./EditableSpan";
-import { deleteTask, updateTask, updateTitleTask } from "./state/task-reducer";
-import { TaskType } from "./api/todolist-api";
-import { useAppDispatch } from "./state/store";
+import { deleteTask, updateTask, updateTitleTask } from "state/task-reducer";
+import { TaskType } from "api/todolist-api";
+import { useAppDispatch } from "state/store";
+import { EditableSpan } from "components/EditableSpan/EditableSpan";
 
 type TaskPropsType = {
   task: TaskType;

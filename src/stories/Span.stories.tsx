@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { ChangeEvent, useState } from "react";
 import { Task } from "../Task";
-import { EditableSpan, EditableSpanPropsType } from "../EditableSpan";
+import { EditableSpan, EditableSpanPropsType } from "../components/EditableSpan/EditableSpan";
 import { action } from "@storybook/addon-actions";
 import { TextField } from "@mui/material";
 

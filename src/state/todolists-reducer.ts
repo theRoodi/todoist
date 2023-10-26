@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { todolistAPI, TodoListType } from "../api/todolist-api";
+import { todolistAPI, TodoListType } from "api/todolist-api";
 import { Dispatch } from "redux";
 import {
   RequestStatusType,
@@ -7,9 +7,9 @@ import {
   SetAppErrorACType,
   setAppStatusAC,
   SetAppStatusACType,
-} from "../AppWithRedux/app-reducer";
+} from "AppWithRedux/app-reducer";
 import { RESULT_CODE } from "./task-reducer";
-import { handleServerNetworkError } from "../utils/error-utils";
+import { handleServerNetworkError } from "utils/error-utils";
 
 export type FilterType = "all" | "active" | "completed";
 export type TodolistDomainType = TodoListType & {

@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from "../../state/store";
+import { useAppDispatch, useAppSelector } from "state/store";
 import { useCallback, useEffect, useState } from "react";
-import { createTodo, getTodo, TodolistDomainType } from "../../state/todolists-reducer";
+import { createTodo, getTodo, TodolistDomainType } from "state/todolists-reducer";
 import { createTheme } from "@mui/material";
 
 export const useAppWithRedux = () => {

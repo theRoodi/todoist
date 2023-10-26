@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { AppWithRedux } from "./AppWithRedux/AppWithRedux";
+import { AppWithRedux } from "AppWithRedux/AppWithRedux";
 import { Provider } from "react-redux";
-import { store } from "./state/store";
+import { store } from "state/store";
 import { HashRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);

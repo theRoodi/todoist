@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "../App.css";
-import { AddItemForm } from "../AddItemForm/AddItemForm";
+import { AddItemForm } from "AddItemForm/AddItemForm";
 import Menu from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -13,17 +13,17 @@ import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
-import { PropsType, Todolist } from "../TodoList";
+import { PropsType, Todolist } from "TodoList";
 import { useAppWithRedux } from "./hooks/useAppWithRedux";
-import { TaskType } from "../api/todolist-api";
+import { TaskType } from "api/todolist-api";
 import { CircularProgress, LinearProgress, ThemeProvider } from "@mui/material";
 import { RequestStatusType } from "./app-reducer";
-import { useAppDispatch, useAppSelector } from "../state/store";
-import { ErrorSnackbar } from "../ErrorSnakbar/ErrorSnackbar";
-import { Login } from "../Login/Login";
-import { TodolistDomainType } from "../state/todolists-reducer";
+import { useAppDispatch, useAppSelector } from "state/store";
+import { ErrorSnackbar } from "components/ErrorSnakbar/ErrorSnackbar";
+import { Login } from "Login/Login";
+import { TodolistDomainType } from "state/todolists-reducer";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC, meTC } from "../state/auth-reducer";
+import { logoutTC, meTC } from "state/auth-reducer";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;

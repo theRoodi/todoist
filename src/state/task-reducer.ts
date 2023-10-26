@@ -1,10 +1,10 @@
-import { TaskStateType } from "../AppWithRedux/AppWithRedux";
+import { TaskStateType } from "AppWithRedux/AppWithRedux";
 import { AddTodolistType, ClearDataActionType, RemoveTodolistType, SetTodolistType } from "./todolists-reducer";
 import { Dispatch } from "redux";
-import { TaskType, todolistAPI, UpdateTaskType } from "../api/todolist-api";
+import { TaskType, todolistAPI, UpdateTaskType } from "api/todolist-api";
 import { RootStateType } from "./store";
-import { SetAppErrorACType, setAppStatusAC, SetAppStatusACType } from "../AppWithRedux/app-reducer";
-import { handleServerAppError, handleServerNetworkError } from "../utils/error-utils";
+import { SetAppErrorACType, setAppStatusAC, SetAppStatusACType } from "AppWithRedux/app-reducer";
+import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import axios from "axios";
 
 type RemoveTaskType = {
