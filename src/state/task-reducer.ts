@@ -3,9 +3,9 @@ import { AddTodolistType, ClearDataActionType, RemoveTodolistType, SetTodolistTy
 import { Dispatch } from "redux";
 import { TaskType, todolistAPI, UpdateTaskType } from "api/todolist-api";
 import { RootStateType } from "./store";
-import { SetAppErrorACType, setAppStatusAC, SetAppStatusACType } from "AppWithRedux/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import axios from "axios";
+import { appActions } from "AppWithRedux/app-reducer";
 
 type RemoveTaskType = {
   type: "REMOVE-TASK";
@@ -44,8 +44,6 @@ type ActionType =
   | RemoveTodolistType
   | SetTodolistType
   | SetTasksType
-  | SetAppStatusACType
-  | SetAppErrorACType
   | ClearDataActionType;
 
 export enum RESULT_CODE {
@@ -142,20 +140,20 @@ export type ErrorType = {
   error: "string";
 };
 export const getTask = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistAPI.getTasks(todoId).then((res) => {
     dispatch(setTaskAC(res.data.items, todoId));
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
 
 export const deleteTask = (todoId: string, taskId: string) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
     const response = await todolistAPI.deleteTask(todoId, taskId);
     if (response.data.resultCode === RESULT_CODE.SUCCESS) {
       dispatch(removeTaskAC(taskId, todoId));
-      dispatch(setAppStatusAC("succeeded"));
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
     } else {
       handleServerAppError(response.data, dispatch);
     }
@@ -169,14 +167,14 @@ export const deleteTask = (todoId: string, taskId: string) => async (dispatch: D
 };
 
 export const addTask = (todoId: string, title: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistAPI
     .createTask(todoId, title)
     .then((res) => {
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
         const task = res.data.data.item;
         dispatch(addTaskAC(task));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       } else {
         handleServerAppError(res.data, dispatch);
       }
@@ -202,7 +200,7 @@ export const updateTask =
         .then((res) => {
           if (res.data.resultCode === RESULT_CODE.SUCCESS) {
             dispatch(changeTaskStatusAC(todoId, taskId, status));
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(appActions.setAppStatus({ status: "succeeded" }));
           } else {
             handleServerAppError(res.data, dispatch);
           }
@@ -229,7 +227,7 @@ export const updateTitleTask =
         .updateTask(todoId, taskId, item)
         .then((res) => {
           dispatch(changeTaskTitleAC(todoId, taskId, title));
-          dispatch(setAppStatusAC("succeeded"));
+          dispatch(appActions.setAppStatus({ status: "succeeded" }));
         })
         .catch((e) => {
           handleServerNetworkError(e, dispatch);

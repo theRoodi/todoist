@@ -1,13 +1,7 @@
 import { v1 } from "uuid";
 import { todolistAPI, TodoListType } from "api/todolist-api";
 import { Dispatch } from "redux";
-import {
-  RequestStatusType,
-  setAppErrorAC,
-  SetAppErrorACType,
-  setAppStatusAC,
-  SetAppStatusACType,
-} from "AppWithRedux/app-reducer";
+import { appActions, RequestStatusType } from "AppWithRedux/app-reducer";
 import { RESULT_CODE } from "./task-reducer";
 import { handleServerNetworkError } from "utils/error-utils";
 
@@ -58,9 +52,7 @@ type ActionType =
   | ChangeTodolistTitleType
   | ChangeTodolistFilterType
   | SetTodolistType
-  | SetAppStatusACType
   | ReturnType<typeof setEntityStatusAC>
-  | SetAppErrorACType
   | ClearDataActionType;
 
 const initialState: Array<TodolistDomainType> = [];
@@ -141,7 +133,7 @@ export const getTodo = () => (dispatch: Dispatch) => {
     .get()
     .then((res) => {
       dispatch(setTodolistAC(res.data));
-      dispatch(setAppStatusAC("succeeded"));
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
     })
     .catch((e) => {
       handleServerNetworkError(e, dispatch);
@@ -149,7 +141,7 @@ export const getTodo = () => (dispatch: Dispatch) => {
 };
 
 export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   dispatch(setEntityStatusAC(todoId, "loading"));
 
   todolistAPI
@@ -157,35 +149,35 @@ export const deleteTodo = (todoId: string) => (dispatch: Dispatch) => {
     .then((res) => {
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
         dispatch(removeTodolistAC(todoId));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(appActions.setAppStatus({ status: "succeeded" }));
       } else {
         const error = res.data.messages[0];
         if (error) {
-          dispatch(setAppErrorAC(error));
+          dispatch(appActions.setAppError({ error: error }));
         } else {
-          dispatch(setAppErrorAC("Please text me 👻"));
+          dispatch(appActions.setAppError({ error: "Please text me 👻" }));
         }
       }
-      dispatch(setAppStatusAC("failed"));
+      dispatch(appActions.setAppStatus({ status: "failed" }));
       dispatch(setEntityStatusAC(todoId, "failed"));
     })
     .catch(() => {
-      dispatch(setAppStatusAC("failed"));
+      dispatch(appActions.setAppStatus({ status: "failed" }));
       dispatch(setEntityStatusAC(todoId, "failed"));
     });
 };
 export const createTodo = (title: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistAPI.addTodo(title).then((res) => {
     dispatch(addTodolistAC(title));
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
 
 export const changeTodoTitle = (todoId: string, title: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus({ status: "loading" }));
   todolistAPI.updateTodolist(todoId, title).then((res) => {
     dispatch(changeTodolistTitleAC(title, todoId));
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus({ status: "succeeded" }));
   });
 };
