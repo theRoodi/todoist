@@ -1,16 +1,16 @@
 import React, { memo, useCallback, useEffect } from "react";
-import { AddItemForm } from "./AddItemForm/AddItemForm";
-import { EditableSpan } from "./components/EditableSpan/EditableSpan";
+import { AddItemForm } from "AddItemForm/AddItemForm";
+import { EditableSpan } from "components/EditableSpan/EditableSpan";
 import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useAppDispatch, useAppSelector } from "./state/store";
-import { addTask, getTask } from "./state/task-reducer";
-import { changeTodolistFilterAC, changeTodoTitle, deleteTodo } from "./state/todolists-reducer";
-import { Task } from "./Task";
-import { TaskType } from "./api/todolist-api";
-import { RequestStatusType } from "./AppWithRedux/app-reducer";
+import { useAppDispatch, useAppSelector } from "state/store";
+import { addTask, getTask } from "state/task-reducer";
+import { changeTodoTitle, deleteTodo, todolistActions } from "state/todolists-reducer";
+import { Task } from "Task";
+import { TaskType } from "api/todolist-api";
+import { RequestStatusType } from "AppWithRedux/app-reducer";
 
 export type TasksType = {
   id: string;
@@ -40,15 +40,15 @@ export const Todolist = memo((props: PropsType) => {
   );
 
   const onAllChangeFilter = useCallback(
-    () => dispatch(changeTodolistFilterAC("all", props.todoId)),
+    () => dispatch(todolistActions.changeTodolistFilter({ filter: "all", todoId: props.todoId })),
     [dispatch, props.todoId],
   );
   const onActiveChangeFilter = useCallback(
-    () => dispatch(changeTodolistFilterAC("active", props.todoId)),
+    () => dispatch(todolistActions.changeTodolistFilter({ filter: "active", todoId: props.todoId })),
     [dispatch, props.todoId],
   );
   const onCompletedChangeFilter = useCallback(
-    () => dispatch(changeTodolistFilterAC("completed", props.todoId)),
+    () => dispatch(todolistActions.changeTodolistFilter({ filter: "completed", todoId: props.todoId })),
     [dispatch, props.todoId],
   );
 
@@ -70,11 +70,7 @@ export const Todolist = memo((props: PropsType) => {
         </IconButton>
       </h3>
       <AddItemForm addItem={addItem} disabled={props.entityStatus === "loading"} />
-      <List>
-        {filteredTasks.map((task) => (
-          <Task key={task.id} task={task} todoId={props.todoId} />
-        ))}
-      </List>
+      <List>{filteredTasks?.map((task) => <Task key={task.id} task={task} todoId={props.todoId} />)}</List>
       <div className="btn-container">
         <ButtonMemo
           variant="contained"

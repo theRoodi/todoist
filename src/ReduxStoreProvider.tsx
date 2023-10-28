@@ -3,13 +3,13 @@ import { store } from "./state/store";
 import React from "react";
 import { combineReducers, legacy_createStore } from "redux";
 import { taskReducer } from "./state/task-reducer";
-import { todolistsReducer } from "./state/todolists-reducer";
 import { v1 } from "uuid";
+import { todolistReducer } from "state/todolists-reducer";
 
 export type RootStateType = ReturnType<typeof rootReducer>;
 const rootReducer = combineReducers({
   tasks: taskReducer,
-  todo: todolistsReducer,
+  todo: todolistReducer,
 });
 
 const state = {
