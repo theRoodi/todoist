@@ -1,6 +1,6 @@
 import { authAPI } from "api/todolist-api";
 import { LoginDataType } from "Login/Login";
-import { RESULT_CODE } from "./task-reducer";
+import { RESULT_CODE, taskActions } from "./task-reducer";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk } from "state/store";
@@ -46,6 +46,7 @@ export const loginTC =
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
         dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }));
         dispatch(appActions.setAppStatus({ status: "succeeded" }));
+        console.log(res.data);
       } else {
         handleServerAppError(res.data, dispatch);
       }
@@ -62,6 +63,7 @@ export const logoutTC = (): AppThunk => async (dispatch) => {
       dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }));
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
       dispatch(todolistActions.clearTodoData({}));
+      dispatch(taskActions.clearData({}));
     } else {
       handleServerAppError(res.data, dispatch);
     }
