@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from "react";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { AddItemForm } from "AddItemForm/AddItemForm";
 import { EditableSpan } from "components/EditableSpan/EditableSpan";
 import List from "@mui/material/List";
@@ -11,6 +11,7 @@ import { changeTodoTitle, deleteTodo, todolistActions } from "state/todolists-re
 import { Task } from "Task";
 import { TaskType } from "api/todolist-api";
 import { RequestStatusType } from "AppWithRedux/app-reducer";
+import { findTasksSelector } from "utils/app.selectors";
 
 export type TasksType = {
   id: string;
@@ -26,8 +27,9 @@ export type PropsType = {
 };
 export const Todolist = memo((props: PropsType) => {
   const dispatch = useAppDispatch();
-  const tasks = useAppSelector<Array<TaskType>>((state) => state.tasks[props.todoId]);
-
+  // const tasks = useAppSelector<Array<TaskType>>((state) => state.tasks[props.todoId]);
+  const selectTodo = useMemo(findTasksSelector, []);
+  const tasks = useAppSelector<Array<TaskType>>((state) => selectTodo(state, props.todoId));
   useEffect(() => {
     dispatch(getTask(props.todoId));
   }, [dispatch, props.todoId]);

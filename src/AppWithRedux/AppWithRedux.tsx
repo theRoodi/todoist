@@ -13,17 +13,18 @@ import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
-import { PropsType, Todolist } from "TodoList";
+import { Todolist } from "TodoList";
 import { useAppWithRedux } from "./hooks/useAppWithRedux";
 import { TaskType } from "api/todolist-api";
 import { CircularProgress, LinearProgress, ThemeProvider } from "@mui/material";
-import { RequestStatusType } from "./app-reducer";
 import { useAppDispatch, useAppSelector } from "state/store";
 import { ErrorSnackbar } from "components/ErrorSnakbar/ErrorSnackbar";
 import { Login } from "Login/Login";
 import { TodolistDomainType } from "state/todolists-reducer";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { logoutTC, meTC } from "state/auth-reducer";
+import { RequestStatusType } from "AppWithRedux/app-reducer";
+import { isInitSelector, statusSelector } from "utils/app.selectors";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -32,8 +33,8 @@ export type TaskStateType = {
 export function AppWithRedux() {
   const { isLoggedIn, todoLists, isDarkMode, addTodolist, customTheme, setDark } = useAppWithRedux();
 
-  const status = useAppSelector<RequestStatusType>((state) => state.app.status);
-  const isInit = useAppSelector((state) => state.app.isInit);
+  const status = useAppSelector<RequestStatusType>(statusSelector);
+  const isInit = useAppSelector(isInitSelector);
   const dispatch = useAppDispatch();
   const logoutHandler = () => {
     dispatch(logoutTC());

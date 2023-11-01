@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "state/store";
 import { useCallback, useEffect, useState } from "react";
 import { createTodo, getTodo, TodolistDomainType } from "state/todolists-reducer";
 import { createTheme } from "@mui/material";
+import { isLoggedInSelector } from "utils/app.selectors";
 
 export const useAppWithRedux = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ export const useAppWithRedux = () => {
     },
     [dispatch],
   );
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
   const darkMode = isDarkMode ? "dark" : "light";
 
   const customTheme = createTheme({
