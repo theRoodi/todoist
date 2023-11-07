@@ -1,4 +1,5 @@
 import { TaskStateType } from "../AppWithRedux/AppWithRedux";
+import { tasksThunks } from "state/task-reducer";
 
 let startState: TaskStateType;
 
@@ -23,10 +24,10 @@ test("task removed", () => {
 });
 
 test("task added", () => {
-  // const action = addTaskAC('title', 'todoId')
-  // const endState = taskReducer(startState, action)
-  // expect(endState['todoId2'].length).toBe(2)
-  // expect(endState['todoId'].length).toBe(3)
+  // const action = tasksThunks.getTasks.fulfilled("title", "todoId");
+  // const endState = taskReducer(startState, action);
+  // expect(endState["todoId2"].length).toBe(2);
+  // expect(endState["todoId"].length).toBe(3);
 });
 
 test("task changed title", () => {

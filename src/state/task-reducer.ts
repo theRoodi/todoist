@@ -1,12 +1,13 @@
 import { TaskStateType } from "AppWithRedux/AppWithRedux";
 import { Dispatch } from "redux";
 import { TaskType, todolistAPI, UpdateTaskType } from "api/todolist-api";
-import { RootStateType } from "./store";
+import { AppDispatch, RootStateType } from "./store";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import axios from "axios";
 import { appActions } from "AppWithRedux/app-reducer";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { todolistActions } from "state/todolists-reducer";
+import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 
 type UpdateModelType = {
   title?: string;
@@ -54,6 +55,9 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getTasks.fulfilled, (state, action) => {
+        state[action.payload.todolistId] = action.payload.tasks;
+      })
       .addCase(todolistActions.addTodolist, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
@@ -78,13 +82,22 @@ export type ErrorType = {
   ];
   error: "string";
 };
-export const getTask = (todoId: string) => (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatus({ status: "loading" }));
-  todolistAPI.getTasks(todoId).then((res) => {
-    dispatch(taskActions.setTask({ tasks: res.data.items, todolistId: todoId }));
-    dispatch(appActions.setAppStatus({ status: "succeeded" }));
-  });
-};
+
+export const getTasks = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
+  `${slice.name}/getTasks`,
+  async (todoId: string, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI;
+    try {
+      dispatch(appActions.setAppStatus({ status: "loading" }));
+      const res = await todolistAPI.getTasks(todoId);
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
+      return { tasks: res.data.items, todolistId: todoId };
+    } catch (e) {
+      handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
+    }
+  },
+);
 
 export const deleteTask = (todoId: string, taskId: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus({ status: "loading" }));
@@ -174,3 +187,4 @@ export const updateTitleTask =
   };
 export const taskReducer = slice.reducer;
 export const taskActions = slice.actions;
+export const tasksThunks = { getTasks };
