@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import {} from "./todolists-reducer";
+import {} from "features/TodolistList/Todolist/todolists-reducer";
 
 let todoId: string;
 let todoId2: string;

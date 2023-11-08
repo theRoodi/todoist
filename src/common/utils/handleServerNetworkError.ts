@@ -1,18 +1,8 @@
-import { Dispatch } from "redux";
-import { ResponseType } from "api/todolist-api";
-import { appActions } from "AppWithRedux/app-reducer";
+import { appActions } from "app/app-reducer";
 import axios from "axios";
 import { AppDispatch } from "state/store";
 
 // generic function
-export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {
-  if (data.messages.length) {
-    dispatch(appActions.setAppError({ error: data.messages[0] }));
-  } else {
-    dispatch(appActions.setAppError({ error: "Some error occurred" }));
-  }
-  dispatch(appActions.setAppStatus({ status: "failed" }));
-};
 
 export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): void => {
   let errorMessage = "Some error occurred";
@@ -31,5 +21,3 @@ export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): v
   dispatch(appActions.setAppError({ error: errorMessage }));
   dispatch(appActions.setAppStatus({ status: "failed" }));
 };
-
-type ErrorUtilsDispatchType = Dispatch;

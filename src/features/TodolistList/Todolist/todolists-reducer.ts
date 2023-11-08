@@ -1,10 +1,9 @@
-import { v1 } from "uuid";
-import { todolistAPI, TodoListType } from "api/todolist-api";
 import { Dispatch } from "redux";
-import { appActions, RequestStatusType } from "AppWithRedux/app-reducer";
-import { RESULT_CODE } from "./task-reducer";
-import { handleServerNetworkError } from "utils/error-utils";
+import { appActions, RequestStatusType } from "app/app-reducer";
+import { RESULT_CODE } from "features/TodolistList/Todolist/task-reducer";
+import { handleServerNetworkError } from "common/utils/handleServerNetworkError";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { todolistAPI, TodoListType } from "features/TodolistList/todolistAPI";
 
 export type FilterType = "all" | "active" | "completed";
 export type TodolistDomainType = TodoListType & {

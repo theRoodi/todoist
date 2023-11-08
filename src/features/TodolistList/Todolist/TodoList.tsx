@@ -1,17 +1,17 @@
 import React, { memo, useCallback, useEffect, useMemo } from "react";
-import { AddItemForm } from "AddItemForm/AddItemForm";
-import { EditableSpan } from "components/EditableSpan/EditableSpan";
+import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
+import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { addTask, tasksThunks } from "state/task-reducer";
-import { changeTodoTitle, deleteTodo, todolistActions } from "state/todolists-reducer";
-import { Task } from "Task";
-import { TaskType } from "api/todolist-api";
-import { RequestStatusType } from "AppWithRedux/app-reducer";
-import { findTasksSelector } from "utils/app.selectors";
+import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
+import { changeTodoTitle, deleteTodo, todolistActions } from "features/TodolistList/Todolist/todolists-reducer";
+import { Task } from "features/TodolistList/Todolist/Task/Task";
+import { RequestStatusType } from "app/app-reducer";
+import { findTasksSelector } from "common/utils/app.selectors";
+import { TaskType } from "features/TodolistList/todolistAPI";
 
 export type TasksType = {
   id: string;
@@ -27,14 +27,18 @@ export type PropsType = {
 };
 export const Todolist = memo((props: PropsType) => {
   const dispatch = useAppDispatch();
-  // const tasks = useAppSelector<Array<TaskType>>((state) => state.tasks[props.todoId]);
   const selectTodo = useMemo(findTasksSelector, []);
   const tasks = useAppSelector<Array<TaskType>>((state) => selectTodo(state, props.todoId));
   useEffect(() => {
     dispatch(tasksThunks.getTasks(props.todoId));
   }, [dispatch, props.todoId]);
 
-  const addItem = useCallback((title: string) => dispatch(addTask(props.todoId, title)), [dispatch, props.todoId]);
+  const addItem = useCallback(
+    (title: string) => {
+      dispatch(tasksThunks.addTask({ todoId: props.todoId, title }));
+    },
+    [dispatch, props.todoId],
+  );
   const removeTodolist = useCallback(() => dispatch(deleteTodo(props.todoId)), [dispatch, props.todoId]);
   const changeTodolistTitle = useCallback(
     (title: string) => dispatch(changeTodoTitle(props.todoId, title)),

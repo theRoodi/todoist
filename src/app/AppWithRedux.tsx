@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import "../App.css";
-import { AddItemForm } from "AddItemForm/AddItemForm";
 import Menu from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
@@ -8,23 +7,21 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
-import { Todolist } from "TodoList";
 import { useAppWithRedux } from "./hooks/useAppWithRedux";
-import { TaskType } from "api/todolist-api";
 import { CircularProgress, LinearProgress, ThemeProvider } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { ErrorSnackbar } from "components/ErrorSnakbar/ErrorSnackbar";
-import { Login } from "Login/Login";
-import { TodolistDomainType } from "state/todolists-reducer";
+import { ErrorSnackbar } from "common/components/ErrorSnakbar/ErrorSnackbar";
+import { Login } from "features/auth/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC, meTC } from "state/auth-reducer";
-import { RequestStatusType } from "AppWithRedux/app-reducer";
-import { isInitSelector, statusSelector } from "utils/app.selectors";
+import { logoutTC, meTC } from "features/auth/auth-reducer";
+import { RequestStatusType } from "app/app-reducer";
+import { isInitSelector, statusSelector } from "common/utils/app.selectors";
+import { TodolistList } from "features/TodolistList/TodolistList";
+import { TaskType } from "features/TodolistList/todolistAPI";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -101,31 +98,3 @@ export function AppWithRedux() {
     </ThemeProvider>
   );
 }
-
-export type TodoListsType = {
-  addTodolist: (title: string) => void;
-  todoLists: Array<TodolistDomainType>;
-  isLoggedIn: boolean;
-};
-
-export const TodolistList = (props: TodoListsType) => {
-  if (!props.isLoggedIn) {
-    return <Navigate to={"/login"} />;
-  }
-  return (
-    <>
-      <Grid container sx={{ p: "15px 0" }}>
-        <AddItemForm addItem={props.addTodolist} />
-      </Grid>
-      <Grid container spacing={3}>
-        {props.todoLists.map((tl) => {
-          return (
-            <Grid key={tl.id} item>
-              <Todolist title={tl.title} todoId={tl.id} filter={tl.filter} entityStatus={tl.entityStatus} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </>
-  );
-};

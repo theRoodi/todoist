@@ -1,11 +1,11 @@
 import { AnyAction, combineReducers } from "redux";
 import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { appReducer } from "AppWithRedux/app-reducer";
-import { taskReducer } from "./task-reducer";
+import { appReducer } from "app/app-reducer";
+import { taskReducer } from "features/TodolistList/Todolist/task-reducer";
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "state/auth-reducer";
-import { todolistReducer } from "state/todolists-reducer";
+import { authReducer } from "features/auth/auth-reducer";
+import { todolistReducer } from "features/TodolistList/Todolist/todolists-reducer";
 
 export type RootStateType = ReturnType<typeof rootReducer>;
 

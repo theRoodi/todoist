@@ -1,12 +1,12 @@
-import React, { ChangeEvent, memo } from "react";
+import React, { ChangeEvent, memo, useCallback } from "react";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
-import { deleteTask, updateTask, updateTitleTask } from "state/task-reducer";
-import { TaskType } from "api/todolist-api";
+import { deleteTask, tasksThunks } from "features/TodolistList/Todolist/task-reducer";
 import { useAppDispatch } from "state/store";
-import { EditableSpan } from "components/EditableSpan/EditableSpan";
+import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
+import { TaskStatuses, TaskType } from "features/TodolistList/todolistAPI";
 
 type TaskPropsType = {
   task: TaskType;
@@ -18,11 +18,15 @@ export const Task = memo((props: TaskPropsType) => {
   const onRemoveHandler = () => dispatch(deleteTask(props.todoId, props.task.id));
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const isDoneValue = e.currentTarget.checked;
-    dispatch(updateTask(props.todoId, props.task.id, isDoneValue ? 2 : 0));
+    const isDoneValue = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
+    dispatch(tasksThunks.updateTask({ todoId: props.todoId, taskId: props.task.id, model: { status: isDoneValue } }));
   };
 
-  const onChangeTitle = (title: string) => dispatch(updateTitleTask(props.todoId, props.task.id, title));
+  const onChangeTitle = useCallback(
+    (title: string) =>
+      dispatch(tasksThunks.updateTask({ todoId: props.todoId, taskId: props.task.id, model: { title } })),
+    [props.todoId, props.task],
+  );
 
   return (
     <ListItem
