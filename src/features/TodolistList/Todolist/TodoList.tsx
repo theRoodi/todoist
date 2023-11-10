@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useAppDispatch, useAppSelector } from "state/store";
 import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
-import { changeTodoTitle, deleteTodo, todolistActions } from "features/TodolistList/Todolist/todolists-reducer";
+import { todolistActions, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
 import { Task } from "features/TodolistList/Todolist/Task/Task";
 import { RequestStatusType } from "app/app-reducer";
 import { findTasksSelector } from "common/utils/app.selectors";
@@ -39,9 +39,12 @@ export const Todolist = memo((props: PropsType) => {
     },
     [dispatch, props.todoId],
   );
-  const removeTodolist = useCallback(() => dispatch(deleteTodo(props.todoId)), [dispatch, props.todoId]);
+  const removeTodolist = useCallback(
+    () => dispatch(todolistThunks.deleteTodo({ todoId: props.todoId })),
+    [dispatch, props.todoId],
+  );
   const changeTodolistTitle = useCallback(
-    (title: string) => dispatch(changeTodoTitle(props.todoId, title)),
+    (title: string) => dispatch(todolistThunks.changeTodoTitle({ todoId: props.todoId, title })),
     [dispatch, props.todoId],
   );
 

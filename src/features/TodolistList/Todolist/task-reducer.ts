@@ -1,9 +1,8 @@
 import { TaskStateType } from "app/AppWithRedux";
-import { Dispatch } from "redux";
 import axios from "axios";
 import { appActions } from "app/app-reducer";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { todolistActions } from "features/TodolistList/Todolist/todolists-reducer";
+import { createSlice } from "@reduxjs/toolkit";
+import { todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
 import { CreateTaskArg, TaskType, todolistAPI, UpdateTaskArg, UpdateTaskType } from "../todolistAPI";
 
@@ -16,6 +15,10 @@ export type UpdateModelType = {
   deadLine?: string;
 };
 
+type DeleteTaskArg = {
+  todoId: string;
+  taskId: string;
+};
 export enum RESULT_CODE {
   SUCCESS = 0,
   FAILED = 1,
@@ -26,13 +29,6 @@ const slice = createSlice({
   name: "tasks",
   initialState: {} as TaskStateType,
   reducers: {
-    removeTask: (state, action: PayloadAction<{ idTask: string; idTodo: string }>) => {
-      const tasks = state[action.payload.idTodo];
-      const index = tasks.findIndex((task) => task.id === action.payload.idTask);
-      if (index !== -1) {
-        tasks.splice(index, 1);
-      }
-    },
     clearData: (state, action) => {
       return {};
     },
@@ -53,14 +49,21 @@ const slice = createSlice({
           tasks[index] = { ...tasks[index], ...action.payload.model };
         }
       })
-      .addCase(todolistActions.addTodolist, (state, action) => {
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        const tasks = state[action.payload.idTodo];
+        const index = tasks.findIndex((task) => task.id === action.payload.idTask);
+        if (index !== -1) {
+          tasks.splice(index, 1);
+        }
+      })
+      .addCase(todolistThunks.createTodo.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
-      .addCase(todolistActions.removeTodolist, (state, action) => {
+      .addCase(todolistThunks.deleteTodo.fulfilled, (state, action) => {
         delete state[action.payload.todoId];
       })
-      .addCase(todolistActions.setTodolist, (state, action) => {
-        action.payload.todolist.forEach((td) => {
+      .addCase(todolistThunks.getTodo.fulfilled, (state, action) => {
+        action.payload.todolist.forEach((td: any) => {
           state[td.id] = [];
         });
       });
@@ -94,24 +97,28 @@ export const getTasks = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: str
   },
 );
 
-export const deleteTask = (todoId: string, taskId: string) => async (dispatch: Dispatch) => {
+export const deleteTask = createAppAsyncThunk<any, DeleteTaskArg>(`${slice.name}/deleteTask`, async (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const response = await todolistAPI.deleteTask(todoId, taskId);
-    if (response.data.resultCode === RESULT_CODE.SUCCESS) {
-      dispatch(taskActions.removeTask({ idTask: taskId, idTodo: todoId }));
+    const res = await todolistAPI.deleteTask(arg.todoId, arg.taskId);
+    if (res.data.resultCode === RESULT_CODE.SUCCESS) {
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
+      return { idTask: arg.taskId, idTodo: arg.todoId };
     } else {
-      handleServerAppError(response.data, dispatch);
+      handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
     }
   } catch (e) {
     if (axios.isAxiosError<ErrorType>(e)) {
       handleServerNetworkError(e, dispatch);
+      return rejectWithValue(null);
     } else {
       handleServerNetworkError(e as Error, dispatch);
+      return rejectWithValue(null);
     }
   }
-};
+});
 export const addTask = createAppAsyncThunk<{ task: TaskType }, CreateTaskArg>(
   `${slice.name}/addTask`,
   async (arg, thunkAPI) => {
@@ -172,4 +179,4 @@ export const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 );
 export const taskReducer = slice.reducer;
 export const taskActions = slice.actions;
-export const tasksThunks = { getTasks, addTask, updateTask };
+export const tasksThunks = { getTasks, addTask, updateTask, deleteTask };

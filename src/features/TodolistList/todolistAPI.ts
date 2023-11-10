@@ -1,8 +1,8 @@
 import { AxiosResponse } from "axios";
 import { UpdateModelType } from "features/TodolistList/Todolist/task-reducer";
 import { instance } from "common/api/instance";
+import { CreateTodoArg } from "features/TodolistList/Todolist/todolists-reducer";
 
-export type FilterType = "all" | "completed" | "active";
 export enum TaskStatuses {
   New = 0,
   InProgress = 1,
@@ -38,6 +38,7 @@ export type TaskType = {
 };
 
 type GetTaskResponseType = {
+  resultCode: number;
   error: string | null;
   totalCount: number;
   items: Array<TaskType>;
@@ -73,12 +74,12 @@ export const todolistAPI = {
   delete(todolistId: string) {
     return instance.delete<ResponseType>(`todo-lists/${todolistId}`);
   },
-  addTodo(title: string) {
+  addTodo(arg: CreateTodoArg) {
     return instance.post<
       ResponseType<{ item: TodoListType }>,
       AxiosResponse<ResponseType<{ item: TodoListType }>>,
       { title: string }
-    >("todo-lists", { title });
+    >("todo-lists", { title: arg.title });
   },
 
   getTasks(todolistId: string) {

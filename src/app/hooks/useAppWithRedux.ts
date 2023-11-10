@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "state/store";
 import { useCallback, useEffect, useState } from "react";
-import { createTodo, getTodo, TodolistDomainType } from "features/TodolistList/Todolist/todolists-reducer";
+import { TodolistDomainType, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
 import { createTheme } from "@mui/material";
 import { isLoggedInSelector } from "common/utils/app.selectors";
 
@@ -11,7 +11,7 @@ export const useAppWithRedux = () => {
   const [isDarkMode, setDarkMode] = useState<boolean>(false);
   const addTodolist = useCallback(
     (title: string) => {
-      dispatch(createTodo(title));
+      dispatch(todolistThunks.createTodo({ title }));
     },
     [dispatch],
   );
@@ -28,7 +28,7 @@ export const useAppWithRedux = () => {
   };
 
   useEffect(() => {
-    dispatch(getTodo());
+    dispatch(todolistThunks.getTodo({}));
   }, [dispatch]);
 
   return {

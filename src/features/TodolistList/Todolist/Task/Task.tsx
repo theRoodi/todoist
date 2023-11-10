@@ -3,7 +3,7 @@ import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
-import { deleteTask, tasksThunks } from "features/TodolistList/Todolist/task-reducer";
+import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
 import { useAppDispatch } from "state/store";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { TaskStatuses, TaskType } from "features/TodolistList/todolistAPI";
@@ -15,7 +15,7 @@ type TaskPropsType = {
 export const Task = memo((props: TaskPropsType) => {
   const dispatch = useAppDispatch();
 
-  const onRemoveHandler = () => dispatch(deleteTask(props.todoId, props.task.id));
+  const onRemoveHandler = () => dispatch(tasksThunks.deleteTask({ todoId: props.todoId, taskId: props.task.id }));
 
   const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const isDoneValue = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
@@ -25,7 +25,7 @@ export const Task = memo((props: TaskPropsType) => {
   const onChangeTitle = useCallback(
     (title: string) =>
       dispatch(tasksThunks.updateTask({ todoId: props.todoId, taskId: props.task.id, model: { title } })),
-    [props.todoId, props.task],
+    [dispatch, props.todoId, props.task],
   );
 
   return (
