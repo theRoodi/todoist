@@ -19,6 +19,7 @@ type DeleteTaskArg = {
   todoId: string;
   taskId: string;
 };
+
 export enum RESULT_CODE {
   SUCCESS = 0,
   FAILED = 1,
@@ -85,8 +86,8 @@ export const getTasks = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: str
   `${slice.name}/getTasks`,
   async (todoId: string, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
+    dispatch(appActions.setAppStatus({ status: "loading" }));
     try {
-      dispatch(appActions.setAppStatus({ status: "loading" }));
       const res = await todolistAPI.getTasks(todoId);
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
       return { tasks: res.data.items, todolistId: todoId };

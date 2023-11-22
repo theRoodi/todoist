@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from "state/store";
 import { ErrorSnackbar } from "common/components/ErrorSnakbar/ErrorSnackbar";
 import { Login } from "features/auth/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { logoutTC, meTC } from "features/auth/auth-reducer";
+import { authThunks } from "features/auth/auth-reducer";
 import { RequestStatusType } from "app/app-reducer";
 import { isInitSelector, statusSelector } from "common/utils/app.selectors";
 import { TodolistList } from "features/TodolistList/TodolistList";
@@ -34,11 +34,11 @@ export function AppWithRedux() {
   const isInit = useAppSelector(isInitSelector);
   const dispatch = useAppDispatch();
   const logoutHandler = () => {
-    dispatch(logoutTC());
+    dispatch(authThunks.logout());
   };
 
   useEffect(() => {
-    dispatch(meTC());
+    dispatch(authThunks.me());
   }, [dispatch]);
 
   if (!isInit) {
