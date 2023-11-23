@@ -7,11 +7,13 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useFormik } from "formik";
-import { useAppDispatch, useAppSelector } from "state/store";
+import { FormikHelpers, useFormik } from "formik";
+import { useAppDispatch, useAppSelector } from "app/store";
 import { Navigate } from "react-router-dom";
 import { isLoggedInSelector } from "common/utils/app.selectors";
 import { authThunks } from "features/auth/auth-reducer";
+import { BaseResponseType } from "common/types";
+import { useActions } from "common/hooks";
 
 type FormikErrorType = {
   email?: string;
@@ -28,6 +30,7 @@ export type LoginDataType = {
 export const Login = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(isLoggedInSelector);
+  const { login } = useActions(authThunks);
 
   const formik = useFormik({
     initialValues: {
@@ -36,23 +39,30 @@ export const Login = () => {
       rememberMe: false,
     },
     validate: (values) => {
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      const errors: FormikErrorType = {};
-      if (!values.email) {
-        errors.email = "Required";
-      } else if (!regex.test(values.email)) {
-        errors.email = "Invalid email address";
-      }
-
-      if (!values.password) {
-        errors.password = "Required";
-      } else if (values.password.length < 3) {
-        errors.password = "Password must be more than three symbols";
-      }
-      return errors;
+      // const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      // const errors: FormikErrorType = {};
+      // if (!values.email) {
+      //   errors.email = "Required";
+      // } else if (!regex.test(values.email)) {
+      //   errors.email = "Invalid email address";
+      // }
+      //
+      // if (!values.password) {
+      //   errors.password = "Required";
+      // } else if (values.password.length < 3) {
+      //   errors.password = "Password must be more than three symbols";
+      // }
+      // return errors;
     },
-    onSubmit: (values) => {
-      dispatch(authThunks.login(values));
+    onSubmit: (values, formikHelpers: FormikHelpers<LoginDataType>) => {
+      login(values)
+        .unwrap()
+        .then((res) => {})
+        .catch((err: BaseResponseType) => {
+          err.fieldsErrors?.forEach((fieldError) => {
+            formikHelpers.setFieldError(fieldError.field, fieldError.error);
+          });
+        });
       formik.resetForm();
     },
   });

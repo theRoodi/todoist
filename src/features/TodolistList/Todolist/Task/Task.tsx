@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import ClearIcon from "@mui/icons-material/Clear";
 import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
-import { useAppDispatch } from "state/store";
+import { useAppDispatch } from "app/store";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { TaskStatuses, TaskType } from "features/TodolistList/todolistAPI";
 

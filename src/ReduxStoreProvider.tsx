@@ -1,5 +1,5 @@
 import { Provider } from "react-redux";
-import { store } from "./state/store";
+import { store } from "app/store";
 import React from "react";
 import { combineReducers, legacy_createStore } from "redux";
 import { taskReducer } from "features/TodolistList/Todolist/task-reducer";

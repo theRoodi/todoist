@@ -3,7 +3,7 @@ import axios from "axios";
 import { appActions } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import { todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
 import { CreateTaskArg, TaskType, todolistAPI, UpdateTaskArg, UpdateTaskType } from "../todolistAPI";
 
 export type UpdateModelType = {
@@ -124,20 +124,15 @@ export const addTask = createAppAsyncThunk<{ task: TaskType }, CreateTaskArg>(
   `${slice.name}/addTask`,
   async (arg, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    dispatch(appActions.setAppStatus({ status: "loading" }));
-    try {
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistAPI.createTask(arg);
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-        dispatch(appActions.setAppStatus({ status: "succeeded" }));
         return { task: res.data.data.item };
       } else {
         handleServerAppError(res.data, dispatch);
         return rejectWithValue(null);
       }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      return rejectWithValue(null);
-    }
+    });
   },
 );
 export const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(

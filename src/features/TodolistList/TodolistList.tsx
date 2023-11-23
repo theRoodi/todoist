@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { Todolist } from "features/TodolistList/Todolist/TodoList";
-import React from "react";
+import React, { useEffect } from "react";
 import { TodolistDomainType } from "features/TodolistList/Todolist/todolists-reducer";
 
 export type TodoListsType = {
@@ -11,6 +11,11 @@ export type TodoListsType = {
   isLoggedIn: boolean;
 };
 export const TodolistList = (props: TodoListsType) => {
+  useEffect(() => {
+    if (!props.isLoggedIn) {
+      return;
+    }
+  }, [props.isLoggedIn]);
   if (!props.isLoggedIn) {
     return <Navigate to={"/login"} />;
   }

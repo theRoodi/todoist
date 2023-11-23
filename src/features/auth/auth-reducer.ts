@@ -3,7 +3,7 @@ import { RESULT_CODE, taskActions } from "features/TodolistList/Todolist/task-re
 import { createSlice } from "@reduxjs/toolkit";
 import { appActions } from "app/app-reducer";
 import { todolistActions } from "features/TodolistList/Todolist/todolists-reducer";
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
 import { authAPI } from "features/auth/authAPI";
 
 const slice = createSlice({
@@ -29,20 +29,19 @@ const slice = createSlice({
 // thunks
 const me = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(`${slice.name}/me`, async (_, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  try {
+
+  return thunkTryCatch(thunkAPI, async () => {
     const res = await authAPI.me();
     if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+      dispatch(appActions.setAppStatus({ status: "succeeded" }));
       return { isLoggedIn: true };
     } else {
       // handleServerAppError(res.data, dispatch);
       return rejectWithValue(null);
     }
-  } catch (e) {
-    handleServerNetworkError(e as { message: string }, dispatch);
-    return rejectWithValue(null);
-  } finally {
+  }).finally(() => {
     dispatch(appActions.setAppInit({ isInit: true }));
-  }
+  });
 });
 
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginDataType>(
@@ -56,8 +55,9 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginDataType>(
         dispatch(appActions.setAppStatus({ status: "succeeded" }));
         return { isLoggedIn: true };
       } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue(null);
+        const isShowAppError = !res.data.fieldsErrors.length;
+        handleServerAppError(res.data, dispatch, isShowAppError);
+        return rejectWithValue(res.data);
       }
     } catch (e) {
       handleServerNetworkError(e, dispatch);

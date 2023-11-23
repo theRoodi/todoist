@@ -1,4 +1,4 @@
-import { RootStateType } from "state/store";
+import { RootStateType } from "app/store";
 import { createSelector } from "@reduxjs/toolkit";
 
 export const statusSelector = (state: RootStateType) => state.app.status;

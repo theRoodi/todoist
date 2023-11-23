@@ -11,9 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
-import { useAppWithRedux } from "./hooks/useAppWithRedux";
 import { CircularProgress, LinearProgress, ThemeProvider } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "state/store";
+import { useAppDispatch, useAppSelector } from "app/store";
 import { ErrorSnackbar } from "common/components/ErrorSnakbar/ErrorSnackbar";
 import { Login } from "features/auth/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -22,6 +21,7 @@ import { RequestStatusType } from "app/app-reducer";
 import { isInitSelector, statusSelector } from "common/utils/app.selectors";
 import { TodolistList } from "features/TodolistList/TodolistList";
 import { TaskType } from "features/TodolistList/todolistAPI";
+import { useActions, useAppWithRedux } from "common/hooks";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -32,14 +32,14 @@ export function AppWithRedux() {
 
   const status = useAppSelector<RequestStatusType>(statusSelector);
   const isInit = useAppSelector(isInitSelector);
-  const dispatch = useAppDispatch();
+  const { me, logout } = useActions(authThunks);
   const logoutHandler = () => {
-    dispatch(authThunks.logout());
+    logout();
   };
 
   useEffect(() => {
-    dispatch(authThunks.me());
-  }, [dispatch]);
+    me();
+  }, []);
 
   if (!isInit) {
     return (

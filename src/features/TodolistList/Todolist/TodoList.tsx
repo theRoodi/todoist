@@ -5,13 +5,14 @@ import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useAppDispatch, useAppSelector } from "state/store";
+import { useAppDispatch, useAppSelector } from "app/store";
 import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
 import { todolistActions, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
 import { Task } from "features/TodolistList/Todolist/Task/Task";
 import { RequestStatusType } from "app/app-reducer";
 import { findTasksSelector } from "common/utils/app.selectors";
 import { TaskType } from "features/TodolistList/todolistAPI";
+import { useActions } from "common/hooks";
 
 export type TasksType = {
   id: string;
@@ -27,38 +28,40 @@ export type PropsType = {
 };
 export const Todolist = memo((props: PropsType) => {
   const dispatch = useAppDispatch();
+  const { deleteTodo, changeTodoTitle } = useActions(todolistThunks);
+  const { getTasks, addTask } = useActions(tasksThunks);
+  const { changeTodolistFilter } = useActions(todolistActions);
+
   const selectTodo = useMemo(findTasksSelector, []);
   const tasks = useAppSelector<Array<TaskType>>((state) => selectTodo(state, props.todoId));
   useEffect(() => {
-    dispatch(tasksThunks.getTasks(props.todoId));
-  }, [dispatch, props.todoId]);
+    getTasks(props.todoId);
+  }, [props.todoId]);
 
   const addItem = useCallback(
     (title: string) => {
-      dispatch(tasksThunks.addTask({ todoId: props.todoId, title }));
+      addTask({ todoId: props.todoId, title });
     },
-    [dispatch, props.todoId],
+    [props.todoId],
   );
-  const removeTodolist = useCallback(
-    () => dispatch(todolistThunks.deleteTodo({ todoId: props.todoId })),
-    [dispatch, props.todoId],
-  );
+  const removeTodolist = useCallback(() => deleteTodo({ todoId: props.todoId }), [props.todoId]);
+
   const changeTodolistTitle = useCallback(
-    (title: string) => dispatch(todolistThunks.changeTodoTitle({ todoId: props.todoId, title })),
-    [dispatch, props.todoId],
+    (title: string) => changeTodoTitle({ todoId: props.todoId, title }),
+    [props.todoId],
   );
 
   const onAllChangeFilter = useCallback(
-    () => dispatch(todolistActions.changeTodolistFilter({ filter: "all", todoId: props.todoId })),
-    [dispatch, props.todoId],
+    () => changeTodolistFilter({ filter: "all", todoId: props.todoId }),
+    [props.todoId],
   );
   const onActiveChangeFilter = useCallback(
-    () => dispatch(todolistActions.changeTodolistFilter({ filter: "active", todoId: props.todoId })),
-    [dispatch, props.todoId],
+    () => changeTodolistFilter({ filter: "active", todoId: props.todoId }),
+    [props.todoId],
   );
   const onCompletedChangeFilter = useCallback(
-    () => dispatch(todolistActions.changeTodolistFilter({ filter: "completed", todoId: props.todoId })),
-    [dispatch, props.todoId],
+    () => changeTodolistFilter({ filter: "completed", todoId: props.todoId }),
+    [props.todoId],
   );
 
   let filteredTasks = tasks;

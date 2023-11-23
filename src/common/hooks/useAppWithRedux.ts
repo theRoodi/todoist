@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "state/store";
+import { useAppDispatch, useAppSelector } from "app/store";
 import { useCallback, useEffect, useState } from "react";
 import { TodolistDomainType, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
 import { createTheme } from "@mui/material";
