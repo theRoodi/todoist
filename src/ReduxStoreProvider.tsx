@@ -2,9 +2,9 @@ import { Provider } from "react-redux";
 import { store } from "app/store";
 import React from "react";
 import { combineReducers, legacy_createStore } from "redux";
-import { taskReducer } from "features/TodolistList/Todolist/task-reducer";
+import { taskReducer } from "features/TodolistList/model/tasks/task-reducer";
 import { v1 } from "uuid";
-import { todolistReducer } from "features/TodolistList/Todolist/todolists-reducer";
+import { todolistReducer } from "features/TodolistList/model/todolists/todolists-reducer";
 
 export type RootStateType = ReturnType<typeof rootReducer>;
 const rootReducer = combineReducers({

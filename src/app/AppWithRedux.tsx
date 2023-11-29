@@ -12,16 +12,16 @@ import Switch from "@mui/material/Switch";
 import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
 import { CircularProgress, LinearProgress, ThemeProvider } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "app/store";
+import { useAppSelector } from "app/store";
 import { ErrorSnackbar } from "common/components/ErrorSnakbar/ErrorSnackbar";
-import { Login } from "features/auth/Login/Login";
+import { Login } from "features/auth/ui/Login/Login";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { authThunks } from "features/auth/auth-reducer";
-import { RequestStatusType } from "app/app-reducer";
+import { authThunks } from "features/auth/model/auth-reducer";
+import { RequestStatus } from "app/app-reducer";
 import { isInitSelector, statusSelector } from "common/utils/app.selectors";
-import { TodolistList } from "features/TodolistList/TodolistList";
-import { TaskType } from "features/TodolistList/todolistAPI";
+import { TodolistList } from "features/TodolistList/ui/TodolistList";
 import { useActions, useAppWithRedux } from "common/hooks";
+import { TaskType } from "features/TodolistList/api/tasks/tasksAPI.types";
 
 export type TaskStateType = {
   [key: string]: Array<TaskType>;
@@ -30,7 +30,7 @@ export type TaskStateType = {
 export function AppWithRedux() {
   const { isLoggedIn, todoLists, isDarkMode, addTodolist, customTheme, setDark } = useAppWithRedux();
 
-  const status = useAppSelector<RequestStatusType>(statusSelector);
+  const status = useAppSelector<RequestStatus>(statusSelector);
   const isInit = useAppSelector(isInitSelector);
   const { me, logout } = useActions(authThunks);
   const logoutHandler = () => {

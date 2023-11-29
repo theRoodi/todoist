@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { todolistAPI } from "features/TodolistList/todolistAPI";
+import { todolistAPI } from "features/TodolistList/api/todolists/todolistAPI";
 import { instance } from "common/api/instance";
+import { tasksAPI } from "features/TodolistList/api/tasks/tasksAPI";
 
 export default {
   title: "todoAPI/API",
@@ -54,7 +55,7 @@ export const GetTasks = () => {
   const [state, setState] = useState<any>(null);
   const [todolistId, setTodoID] = useState("");
   const getTask = () => {
-    todolistAPI
+    tasksAPI
       .getTasks(todolistId)
       .then((res) => setState(res.data))
       .then(() => setTodoID(""));
@@ -107,7 +108,7 @@ export const DeleteTask = () => {
   const [todolistId, setTodoID] = useState("");
   const [taskId, setTaskID] = useState("");
   const deleteTask = () => {
-    todolistAPI.deleteTask(todolistId, taskId).then((res) => setState(res.data));
+    tasksAPI.deleteTask(todolistId, taskId).then((res) => setState(res.data));
   };
 
   return (
@@ -143,7 +144,7 @@ export const UpdateTask = () => {
     deadline: "",
   };
   const updateTask = () => {
-    todolistAPI.updateTask(todolistId, taskId, item).then((res) => setState(res.data));
+    tasksAPI.updateTask(todolistId, taskId, item).then((res) => setState(res.data));
   };
 
   return (

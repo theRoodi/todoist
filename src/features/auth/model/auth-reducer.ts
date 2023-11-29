@@ -1,10 +1,10 @@
-import { LoginDataType } from "features/auth/Login/Login";
-import { RESULT_CODE, taskActions } from "features/TodolistList/Todolist/task-reducer";
+import { LoginDataType } from "features/auth/ui/Login/Login";
+import { RESULT_CODE, taskActions } from "features/TodolistList/model/tasks/task-reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import { appActions } from "app/app-reducer";
-import { todolistActions } from "features/TodolistList/Todolist/todolists-reducer";
+import { todolistActions } from "features/TodolistList/model/todolists/todolists-reducer";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
-import { authAPI } from "features/auth/authAPI";
+import { authAPI } from "features/auth/api/authAPI";
 
 const slice = createSlice({
   name: "auth",

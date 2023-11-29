@@ -1,14 +1,15 @@
-import { appActions, RequestStatusType } from "app/app-reducer";
-import { RESULT_CODE } from "features/TodolistList/Todolist/task-reducer";
+import { appActions, RequestStatus } from "app/app-reducer";
+import { RESULT_CODE } from "features/TodolistList/model/tasks/task-reducer";
 import { handleServerNetworkError } from "common/utils/handleServerNetworkError";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { todolistAPI, TodoListType } from "features/TodolistList/todolistAPI";
+import { todolistAPI } from "features/TodolistList/api/todolists/todolistAPI";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
+import { TodoListType } from "features/TodolistList/api/todolists/todolistAPI.types";
 
 export type FilterType = "all" | "active" | "completed";
 export type TodolistDomainType = TodoListType & {
   filter: FilterType;
-  entityStatus: RequestStatusType;
+  entityStatus: RequestStatus;
 };
 export type CreateTodoArg = {
   title: string;
@@ -36,7 +37,7 @@ const slice = createSlice({
         todolist.filter = action.payload.filter;
       }
     },
-    setEntityStatus: (state, action: PayloadAction<{ status: RequestStatusType; todoId: string }>) => {
+    setEntityStatus: (state, action: PayloadAction<{ status: RequestStatus; todoId: string }>) => {
       const todolist = state.find((todo) => todo.id === action.payload.todoId);
       if (todolist) {
         todolist.entityStatus = action.payload.status;
@@ -69,7 +70,7 @@ const slice = createSlice({
   },
 });
 
-export const getTodo = createAppAsyncThunk<any, any>(`${slice.name}/getTodo`, async (arg, thunkAPI) => {
+export const getTodo = createAppAsyncThunk<any, any>(`${slice.name}/getTodo`, async (argeeee, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {

@@ -6,45 +6,45 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useAppDispatch, useAppSelector } from "app/store";
-import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
-import { todolistActions, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
-import { Task } from "features/TodolistList/Todolist/Task/Task";
-import { RequestStatusType } from "app/app-reducer";
+import { tasksThunks } from "features/TodolistList/model/tasks/task-reducer";
+import { todolistActions, todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
+import { Task } from "features/TodolistList/ui/Todolist/Task/Task";
+import { RequestStatus } from "app/app-reducer";
 import { findTasksSelector } from "common/utils/app.selectors";
-import { TaskType } from "features/TodolistList/todolistAPI";
 import { useActions } from "common/hooks";
+import { TaskStatuses, TaskType } from "features/TodolistList/api/tasks/tasksAPI.types";
 
-export type TasksType = {
+export type Tasks = {
   id: string;
   title: string;
   isDone: boolean;
 };
 
-export type PropsType = {
+export type Props = {
   title: string;
   todoId: string;
   filter: string;
-  entityStatus: RequestStatusType;
+  entityStatus: RequestStatus;
 };
-export const Todolist = memo((props: PropsType) => {
-  const dispatch = useAppDispatch();
+export const Todolist = memo((props: Props) => {
   const { deleteTodo, changeTodoTitle } = useActions(todolistThunks);
   const { getTasks, addTask } = useActions(tasksThunks);
   const { changeTodolistFilter } = useActions(todolistActions);
 
   const selectTodo = useMemo(findTasksSelector, []);
+
   const tasks = useAppSelector<Array<TaskType>>((state) => selectTodo(state, props.todoId));
   useEffect(() => {
     getTasks(props.todoId);
   }, [props.todoId]);
 
-  const addItem = useCallback(
+  const addTaskCallback = useCallback(
     (title: string) => {
       addTask({ todoId: props.todoId, title });
     },
     [props.todoId],
   );
-  const removeTodolist = useCallback(() => deleteTodo({ todoId: props.todoId }), [props.todoId]);
+  const removeTodolist = () => deleteTodo({ todoId: props.todoId });
 
   const changeTodolistTitle = useCallback(
     (title: string) => changeTodoTitle({ todoId: props.todoId, title }),
@@ -67,10 +67,10 @@ export const Todolist = memo((props: PropsType) => {
   let filteredTasks = tasks;
 
   if (props.filter === "completed") {
-    filteredTasks = tasks.filter((t) => t.completed);
+    filteredTasks = tasks.filter((t) => t.status === TaskStatuses.Completed);
   }
   if (props.filter === "active") {
-    filteredTasks = tasks.filter((t) => !t.completed);
+    filteredTasks = tasks.filter((t) => t.status === TaskStatuses.New);
   }
 
   return (
@@ -81,7 +81,7 @@ export const Todolist = memo((props: PropsType) => {
           <ClearIcon />
         </IconButton>
       </h3>
-      <AddItemForm addItem={addItem} disabled={props.entityStatus === "loading"} />
+      <AddItemForm addItem={addTaskCallback} disabled={props.entityStatus === "loading"} />
       <List>{filteredTasks?.map((task) => <Task key={task.id} task={task} todoId={props.todoId} />)}</List>
       <div className="btn-container">
         <ButtonMemo

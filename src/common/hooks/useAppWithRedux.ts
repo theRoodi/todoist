@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "app/store";
 import { useCallback, useEffect, useState } from "react";
-import { TodolistDomainType, todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
+import { TodolistDomainType, todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
 import { createTheme } from "@mui/material";
 import { isLoggedInSelector } from "common/utils/app.selectors";
 

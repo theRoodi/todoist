@@ -1,9 +1,9 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { appReducer } from "app/app-reducer";
-import { taskReducer } from "features/TodolistList/Todolist/task-reducer";
+import { taskReducer } from "features/TodolistList/model/tasks/task-reducer";
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "features/auth/auth-reducer";
-import { todolistReducer } from "features/TodolistList/Todolist/todolists-reducer";
+import { authReducer } from "features/auth/model/auth-reducer";
+import { todolistReducer } from "features/TodolistList/model/todolists/todolists-reducer";
 
 export type RootStateType = ReturnType<typeof store.getState>;
 

@@ -2,9 +2,10 @@ import { TaskStateType } from "app/AppWithRedux";
 import axios from "axios";
 import { appActions } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
-import { todolistThunks } from "features/TodolistList/Todolist/todolists-reducer";
+import { todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
-import { CreateTaskArg, TaskType, todolistAPI, UpdateTaskArg, UpdateTaskType } from "../todolistAPI";
+import { CreateTaskArg, TaskType, UpdateTaskArg, UpdateTaskType } from "features/TodolistList/api/tasks/tasksAPI.types";
+import { tasksAPI } from "features/TodolistList/api/tasks/tasksAPI";
 
 export type UpdateModelType = {
   title?: string;
@@ -88,7 +89,7 @@ export const getTasks = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: str
     const { dispatch, rejectWithValue } = thunkAPI;
     dispatch(appActions.setAppStatus({ status: "loading" }));
     try {
-      const res = await todolistAPI.getTasks(todoId);
+      const res = await tasksAPI.getTasks(todoId);
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
       return { tasks: res.data.items, todolistId: todoId };
     } catch (e) {
@@ -102,7 +103,7 @@ export const deleteTask = createAppAsyncThunk<any, DeleteTaskArg>(`${slice.name}
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
   try {
-    const res = await todolistAPI.deleteTask(arg.todoId, arg.taskId);
+    const res = await tasksAPI.deleteTask(arg.todoId, arg.taskId);
     if (res.data.resultCode === RESULT_CODE.SUCCESS) {
       dispatch(appActions.setAppStatus({ status: "succeeded" }));
       return { idTask: arg.taskId, idTodo: arg.todoId };
@@ -125,7 +126,7 @@ export const addTask = createAppAsyncThunk<{ task: TaskType }, CreateTaskArg>(
   async (arg, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistAPI.createTask(arg);
+      const res = await tasksAPI.createTask(arg);
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
         return { task: res.data.data.item };
       } else {
@@ -158,7 +159,7 @@ export const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
         deadline: task.deadline,
         ...arg.model,
       };
-      const res = await todolistAPI.updateTask(arg.todoId, arg.taskId, item);
+      const res = await tasksAPI.updateTask(arg.todoId, arg.taskId, item);
 
       if (res.data.resultCode === RESULT_CODE.SUCCESS) {
         dispatch(appActions.setAppStatus({ status: "succeeded" }));

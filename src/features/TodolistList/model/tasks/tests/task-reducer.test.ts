@@ -1,5 +1,5 @@
 import { TaskStateType } from "app/AppWithRedux";
-import { tasksThunks } from "features/TodolistList/Todolist/task-reducer";
+import { tasksThunks } from "features/TodolistList/model/tasks/task-reducer";
 
 let startState: TaskStateType;
 
