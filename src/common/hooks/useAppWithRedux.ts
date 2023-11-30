@@ -28,6 +28,9 @@ export const useAppWithRedux = () => {
   };
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
     dispatch(todolistThunks.getTodo({}));
   }, [dispatch]);
 

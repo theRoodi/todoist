@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import { AddItemForm, AddItemFormPropsType } from "../common/components/AddItemForm/AddItemForm";
 import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
@@ -23,11 +22,11 @@ export default meta;
 
 type Story = StoryObj<typeof AddItemForm>;
 
-export const AddItemFormStory: Story = {
-  args: {
-    addItem: action("clicked addItem"),
-  },
-};
+// export const AddItemFormStory: Story = {
+//   args: {
+//     addItem: action("clicked addItem"),
+//   },
+// };
 
 const Comp = (props: AddItemFormPropsType) => {
   const [title, setTitle] = useState("");

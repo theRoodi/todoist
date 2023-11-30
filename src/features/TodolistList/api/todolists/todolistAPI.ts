@@ -5,8 +5,8 @@ import { BaseResponseType } from "common/types/common.types";
 import { TodoListType } from "features/TodolistList/api/todolists/todolistAPI.types";
 
 export const todolistAPI = {
-  updateTodolist(todolistId: string, title: string) {
-    return instance.put<BaseResponseType, { title: string }>(`todo-lists/${todolistId}`, { title: title });
+  updateTodolist(todoId: string, title: string) {
+    return instance.put<BaseResponseType>(`todo-lists/${todoId}`, { title: title });
   },
   get() {
     return instance.get<TodoListType[]>("todo-lists/");

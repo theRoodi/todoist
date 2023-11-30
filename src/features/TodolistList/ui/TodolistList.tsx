@@ -12,16 +12,17 @@ export type TodoListsType = {
   isLoggedIn: boolean;
 };
 export const TodolistList = (props: TodoListsType) => {
-  const { createTodo } = useActions(todolistThunks);
+  const { createTodo, getTodo } = useActions(todolistThunks);
 
   useEffect(() => {
     if (!props.isLoggedIn) {
       return;
     }
+    getTodo({});
   }, [props.isLoggedIn]);
 
   const addTodolist = useCallback((title: string) => {
-    createTodo({ title });
+    return createTodo({ title }).unwrap();
   }, []);
 
   if (!props.isLoggedIn) {
@@ -31,7 +32,6 @@ export const TodolistList = (props: TodoListsType) => {
     <>
       <Grid container sx={{ p: "15px 0" }}>
         <AddItemForm addItem={addTodolist} />
-        {/*<AddItemForm addItem={props.addTodolist} />*/}
       </Grid>
       <Grid container spacing={3}>
         {props.todoLists.map((tl) => {

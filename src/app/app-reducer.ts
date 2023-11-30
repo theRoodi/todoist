@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
+import { todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
 
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
@@ -19,6 +20,24 @@ const slice = createSlice({
     setAppInit: (state, action: PayloadAction<{ isInit: boolean }>) => {
       state.isInit = action.payload.isInit;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isPending, (state, action) => {
+        state.status = "loading";
+      })
+      .addMatcher(isFulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
+      .addMatcher(isRejected, (state, action: AnyAction) => {
+        state.status = "failed";
+        if (action.payload) {
+          if (action.type.includes("createTodo") || action.type.includes("addTask")) return;
+          state.error = action.payload.messages[0];
+        } else {
+          state.error = action.error.message ? action.error.message : "Some error";
+        }
+      });
   },
 });
 

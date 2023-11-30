@@ -1,9 +1,8 @@
 import { appActions, RequestStatus } from "app/app-reducer";
 import { RESULT_CODE } from "features/TodolistList/model/tasks/task-reducer";
-import { handleServerNetworkError } from "common/utils/handleServerNetworkError";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { todolistAPI } from "features/TodolistList/api/todolists/todolistAPI";
-import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError } from "common/utils";
 import { TodoListType } from "features/TodolistList/api/todolists/todolistAPI.types";
 
 export type FilterType = "all" | "active" | "completed";
@@ -70,67 +69,42 @@ const slice = createSlice({
   },
 });
 
-export const getTodo = createAppAsyncThunk<any, any>(`${slice.name}/getTodo`, async (argeeee, thunkAPI) => {
-  const { dispatch, rejectWithValue } = thunkAPI;
-  dispatch(appActions.setAppStatus({ status: "loading" }));
-  try {
-    const res = await todolistAPI.get();
-    dispatch(appActions.setAppStatus({ status: "succeeded" }));
-    return { todolist: res.data };
-  } catch (e) {
-    handleServerNetworkError(e, dispatch);
-    dispatch(appActions.setAppStatus({ status: "failed" }));
-    return rejectWithValue(null);
-  }
+export const getTodo = createAppAsyncThunk<any, any>(`${slice.name}/getTodo`, async () => {
+  const res = await todolistAPI.get();
+  return { todolist: res.data };
 });
 export const deleteTodo = createAppAsyncThunk<any, DeleteTodoArg>(`${slice.name}/deleteTodo`, async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
   dispatch(appActions.setAppStatus({ status: "loading" }));
-  try {
-    const res = await todolistAPI.delete(arg.todoId);
-    if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-      dispatch(appActions.setAppStatus({ status: "succeeded" }));
-      return { todoId: arg.todoId };
-    } else {
-      const error = res.data.messages[0];
-      if (error) {
-        dispatch(appActions.setAppError({ error: error }));
-      } else {
-        dispatch(appActions.setAppError({ error: "Please text me 👻" }));
-      }
-    }
-  } catch (e) {
-    dispatch(appActions.setAppStatus({ status: "failed" }));
-    dispatch(todolistActions.setEntityStatus({ todoId: arg.todoId, status: "failed" }));
-    return rejectWithValue(null);
+  const res = await todolistAPI.delete(arg.todoId).finally(() => {
+    dispatch(appActions.setAppStatus({ status: "idle" }));
+  });
+  if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+    return { todoId: arg.todoId };
+  } else {
+    rejectWithValue(res.data);
   }
 });
 export const createTodo = createAppAsyncThunk<any, CreateTodoArg>(`${slice.name}/createTodo`, async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  return thunkTryCatch(thunkAPI, async () => {
-    const res = await todolistAPI.addTodo(arg);
-    if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-      return { todolist: res.data.data.item };
-    } else {
-      handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null);
-    }
-  });
+  const res = await todolistAPI.addTodo(arg);
+  if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+    return { todolist: res.data.data.item };
+  } else {
+    return rejectWithValue(res.data);
+  }
 });
 
 export const changeTodoTitle = createAppAsyncThunk<any, UpdateTodoTitleArg>(
   `${slice.name}/changeTodoTitle`,
   async (arg, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    dispatch(appActions.setAppStatus({ status: "loading" }));
-    try {
-      const res = await todolistAPI.updateTodolist(arg.todoId, arg.title);
-      dispatch(appActions.setAppStatus({ status: "succeeded" }));
+
+    const res = await todolistAPI.updateTodolist(arg.todoId, arg.title);
+    if (res.data.resultCode === RESULT_CODE.SUCCESS) {
       return arg;
-    } catch (e) {
-      handleServerNetworkError(e, dispatch);
-      dispatch(appActions.setAppStatus({ status: "failed" }));
-      return rejectWithValue(null);
+    } else {
+      rejectWithValue(null);
     }
   },
 );

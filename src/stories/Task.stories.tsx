@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { Task } from "features/TodolistList/ui/Todolist/Task/Task";
-import { useSelector } from "react-redux";
 
-import { ReduxStoreProvider, RootStateType } from "../ReduxStoreProvider";
-import { Tasks } from "features/TodolistList/ui/Todolist/TodoList";
+import { ReduxStoreProvider } from "../ReduxStoreProvider";
 
 const meta: Meta<typeof Task> = {
   title: "todo/Task",

@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import { useAddItemForm } from "common/components/AddItemForm/hooks/useAddItemForm";
 
 export type AddItemFormPropsType = {
-  addItem: (title: string) => void;
+  addItem: (title: string) => Promise<unknown>;
   disabled?: boolean;
 };
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
@@ -19,13 +19,12 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
         onChange={changeTitle}
         onKeyPress={onKeyPressHandler}
         error={!!error}
-        helperText={error && "Enter title!"}
         disabled={props.disabled}
       />
       <IconButton onClick={() => addTask(title)} size="small" disabled={props.disabled}>
         <AddIcon />
       </IconButton>
-      {/*{error && <div className={'errorMessage'}>{error}</div>}*/}
+      {error && <div className={"errorMessage"}>{error}</div>}
     </div>
   );
 });
