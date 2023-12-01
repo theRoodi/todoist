@@ -27,7 +27,7 @@ export type TaskStateType = {
   [key: string]: Array<TaskType>;
 };
 
-export function AppWithRedux() {
+export function App() {
   const { isLoggedIn, todoLists, isDarkMode, addTodolist, customTheme, setDark } = useAppWithRedux();
 
   const status = useAppSelector<RequestStatus>(statusSelector);

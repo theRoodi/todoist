@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AddItemForm, AddItemFormPropsType } from "../common/components/AddItemForm/AddItemForm";
+import { AddItemForm, Props } from "../common/components/AddItemForm/AddItemForm";
 import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof AddItemForm>;
 //   },
 // };
 
-const Comp = (props: AddItemFormPropsType) => {
+const Comp = (props: Props) => {
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
   const addTask = useCallback(

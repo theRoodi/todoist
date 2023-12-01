@@ -1,37 +1,30 @@
-/*.App {*/
-/*  padding: 30px;*/
-/*  display: flex;*/
-/*}*/
-
-/*.App > div {*/
-/*  margin-right: 50px;*/
-/*}*/
 
 .error {
-  border: red 1px solid;
+    border: red 1px solid;
 }
 
 .errorMessage {
-  color: red;
+    color: red;
 }
 
 .activeFilter {
-  background-color: dodgerblue;
+    background-color: dodgerblue;
 }
+
 .isDone {
-  opacity: 0.5;
-  text-decoration: line-through;
+    opacity: 0.5;
+    text-decoration: line-through;
 }
 
 .todolist {
-  width: 300px;
-  background-color: rgba(227, 227, 227, 0.1);
-  border-radius: 15px;
-  border: 1px solid rgba(188, 188, 188, 0.15);
-  padding: 20px;
+    width: 300px;
+    background-color: rgba(227, 227, 227, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(188, 188, 188, 0.15);
+    padding: 20px;
 }
 
 .btn-container {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }

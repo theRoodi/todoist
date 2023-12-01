@@ -1,4 +1,4 @@
-import { TaskStateType } from "app/AppWithRedux";
+import { TaskStateType } from "app/App";
 import { TodolistDomainType } from "features/TodolistList/model/todolists/todolists-reducer";
 
 test("ids equals", () => {

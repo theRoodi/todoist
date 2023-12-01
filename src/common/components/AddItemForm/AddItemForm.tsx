@@ -4,11 +4,11 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import { useAddItemForm } from "common/components/AddItemForm/hooks/useAddItemForm";
 
-export type AddItemFormPropsType = {
+export type Props = {
   addItem: (title: string) => Promise<unknown>;
   disabled?: boolean;
 };
-export const AddItemForm = memo((props: AddItemFormPropsType) => {
+export const AddItemForm = memo((props: Props) => {
   const { title, error, changeTitle, onKeyPressHandler, addTask } = useAddItemForm(props.addItem);
 
   return (

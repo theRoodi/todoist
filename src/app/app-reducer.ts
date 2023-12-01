@@ -1,5 +1,4 @@
-import { AnyAction, createSlice, isAnyOf, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
-import { todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
+import { AnyAction, createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit";
 
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 

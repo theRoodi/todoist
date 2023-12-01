@@ -11,13 +11,7 @@ import { useAppSelector } from "app/store";
 import { Navigate } from "react-router-dom";
 import { isLoggedInSelector } from "common/utils/app.selectors";
 import { useLogin } from "features/auth/lib/useLogin";
-
-export type LoginDataType = {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-  captcha?: string;
-};
+import { LoginDataType } from "common/types/common.types";
 
 export const Login = () => {
   const { formik } = useLogin();

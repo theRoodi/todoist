@@ -6,12 +6,12 @@ import React, { useCallback, useEffect } from "react";
 import { TodolistDomainType, todolistThunks } from "features/TodolistList/model/todolists/todolists-reducer";
 import { useActions } from "common/hooks";
 
-export type TodoListsType = {
+export type Props = {
   addTodolist: (title: string) => void;
   todoLists: Array<TodolistDomainType>;
   isLoggedIn: boolean;
 };
-export const TodolistList = (props: TodoListsType) => {
+export const TodolistList = (props: Props) => {
   const { createTodo, getTodo } = useActions(todolistThunks);
 
   useEffect(() => {

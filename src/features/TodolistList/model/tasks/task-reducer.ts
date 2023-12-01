@@ -1,4 +1,4 @@
-import { TaskStateType } from "app/AppWithRedux";
+import { TaskStateType } from "app/App";
 import axios from "axios";
 import { appActions } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
