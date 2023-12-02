@@ -32,7 +32,7 @@ const slice = createSlice({
         state.status = "failed";
         if (action.payload) {
           if (action.type.includes("createTodo") || action.type.includes("addTask")) return;
-          state.error = action.payload.messages[0];
+          // state.error = action.payload.messages[0];
         } else {
           state.error = action.error.message ? action.error.message : "Some error";
         }

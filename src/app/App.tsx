@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import "../App.css";
 import Menu from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
@@ -33,9 +33,9 @@ export function App() {
   const status = useAppSelector<RequestStatus>(statusSelector);
   const isInit = useAppSelector(isInitSelector);
   const { me, logout } = useActions(authThunks);
-  const logoutHandler = () => {
+  const logoutHandler = useCallback(() => {
     logout();
-  };
+  }, []);
 
   useEffect(() => {
     me();

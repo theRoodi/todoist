@@ -2,7 +2,7 @@ import { useActions } from "common/hooks";
 import { authThunks } from "features/auth/model/auth-reducer";
 import { FormikHelpers, useFormik } from "formik";
 import { BaseResponseType } from "common/types";
-import { LoginDataType } from "features/auth/ui/Login/Login";
+import { LoginDataType } from "common/types/common.types";
 
 type FormikErrorType = Partial<Omit<LoginDataType, "captcha">>;
 export const useLogin = () => {
